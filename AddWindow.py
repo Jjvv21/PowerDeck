@@ -2,13 +2,13 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
-import shutil
+import os, shutil
 
 from functions import loadImage
 from Card import *
 
 class AddWindow:
-    img = "noImg.jpg"
+    img = "noImage.jpg"
     path = ""
     savePath = os.getcwd() + os.sep + "img"
     races = ["Raza1", "Raza2", "Raza3", "Raza4", "Raza5"]
@@ -52,113 +52,10 @@ class AddWindow:
         self.DescText.bind('<KeyPress>', self.descCharCount)
         self.DescText.bind('<KeyRelease>', self.descCharCount)
         self.scroll = Scrollbar(self.canvas)
-        self.scroll.place(height = 5, x = 750, y = 50)
+        self.scroll.place(height = 10, x = 750, y = 50)
         self.scroll.config(command = self.DescText.yview)
 
-        vcmd = (self.window.register(self.checkNum), '%P')
-        self.canvas.create_text(10, 150, anchor = NW, text = "Poder: ")
-        self.PwrEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.PwrEntry.place(x = 90, y = 150)        
-
-        self.canvas.create_text(10, 170, anchor = NW, text = "Velocidad: ", fill = "#000000")
-        self.SpdEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.SpdEntry.place(x = 90, y = 170)
-
-        self.canvas.create_text(10, 190, anchor = NW, text = "Magia: ", fill = "#000000")
-        self.MgcEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.MgcEntry.place(x = 90, y = 190)
-
-        self.canvas.create_text(10, 210, anchor = NW, text = "Defensa: ", fill = "#000000")
-        self.DefEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.DefEntry.place(x = 90, y = 210)
-
-        self.canvas.create_text(10, 230, anchor = NW, text = "Inteligencia: ", fill = "#000000")
-        self.SpdEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.SpdEntry.place(x = 90, y = 230)
-
-        self.canvas.create_text(10, 250, anchor = NW, text = "Altura: ", fill = "#000000")
-        self.HeightEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.HeightEntry.place(x = 90, y = 250)
-
-        self.canvas.create_text(10, 270, anchor = NW, text = "Fuerza: ", fill = "#000000")
-        self.StrEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.StrEntry.place(x = 90, y = 270)
-
-        self.canvas.create_text(10, 290, anchor = NW, text = "Agilidad: ", fill = "#000000")
-        self.AglEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.AglEntry.place(x = 90, y = 290)
-
-        self.canvas.create_text(10, 310, anchor = NW, text = "Salto: ", fill = "#000000")
-        self.JmpEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.JmpEntry.place(x = 90, y = 310)
-
-        self.canvas.create_text(130, 150, anchor = NW, text = "Resistencia: ", fill = "#000000")
-        self.ResEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ResEntry.place(x = 210, y = 150)        
-
-        self.canvas.create_text(130, 170, anchor = NW, text = "Flexibilidad: ", fill = "#000000")
-        self.FlxEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.FlxEntry.place(x = 210, y = 170)
-
-        self.canvas.create_text(130, 190, anchor = NW, text = "Explosividad: ", fill = "#000000")
-        self.ExplEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ExplEntry.place(x = 210, y = 190)
-
-        self.canvas.create_text(130, 210, anchor = NW, text = "Carisma: ", fill = "#000000")
-        self.ChrsEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ChrsEntry.place(x = 210, y = 210)
-
-        self.canvas.create_text(130, 230, anchor = NW, text = "Habilidad: ", fill = "#000000")
-        self.AblEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.AblEntry.place(x = 210, y = 230)
-
-        self.canvas.create_text(130, 250, anchor = NW, text = "Balance: ", fill = "#000000")
-        self.BlcEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.BlcEntry.place(x = 210, y = 250)
-
-        self.canvas.create_text(130, 270, anchor = NW, text = "Sabiduría: ", fill = "#000000")
-        self.WsdEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.WsdEntry.place(x = 210, y = 270)
-
-        self.canvas.create_text(130, 290, anchor = NW, text = "Suerte: ", fill = "#000000")
-        self.LckEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.LckEntry.place(x = 210, y = 290)
-
-        self.canvas.create_text(130, 310, anchor = NW, text = "Coordinación: ", fill = "#000000")
-        self.CordEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.CordEntry.place(x = 210, y = 310)
-
-        self.canvas.create_text(250, 150, anchor = NW, text = "Amabilidad: ", fill = "#000000")
-        self.ResEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ResEntry.place(x = 330, y = 150)        
-
-        self.canvas.create_text(250, 170, anchor = NW, text = "Lealtad: ", fill = "#000000")
-        self.FlxEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.FlxEntry.place(x = 330, y = 170)
-
-        self.canvas.create_text(250, 190, anchor = NW, text = "Disciplina: ", fill = "#000000")
-        self.ExplEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ExplEntry.place(x = 330, y = 190)
-
-        self.canvas.create_text(250, 210, anchor = NW, text = "Liderazgo: ", fill = "#000000")
-        self.ChrsEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.ChrsEntry.place(x = 330, y = 210)
-
-        self.canvas.create_text(250, 230, anchor = NW, text = "Prudencia: ", fill = "#000000")
-        self.AblEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.AblEntry.place(x = 330, y = 230)
-
-        self.canvas.create_text(250, 250, anchor = NW, text = "Confianza: ", fill = "#000000")
-        self.BlcEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.BlcEntry.place(x = 330, y = 250)
-
-        self.canvas.create_text(250, 270, anchor = NW, text = "Percepción: ", fill = "#000000")
-        self.WsdEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.WsdEntry.place(x = 330, y = 270)
-
-        self.canvas.create_text(250, 290, anchor = NW, text = "Valentía: ", fill = "#000000")
-        self.LckEntry = Entry(self.canvas, width = 4, validate="key", validatecommand=vcmd)
-        self.LckEntry.place(x = 330, y = 290)
+        self.placeStatEntries(10, 150)
 
         self.selectedImg = loadImage("noImage.jpg")
         self.canvas.create_image(450, 180, anchor = NW, image = self.selectedImg, tags = "selection")
@@ -173,6 +70,112 @@ class AddWindow:
         self.BackButton = Button(self.canvas, text = "Atrás", command = self.back)
         self.BackButton.place(x = 760, y = 500)
 
+    def placeStatEntries(self, posX, posY):
+        vcmd = (self.window.register(self.checkNum), '%P')
+        self.canvas.create_text(posX, posY, anchor = NW, text = "Poder: ")
+        self.PowerEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.PowerEntry.place(x = posX + 80, y = posY)        
+
+        self.canvas.create_text(posX, posY + 20, anchor = NW, text = "Velocidad: ")
+        self.SpeedEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.SpeedEntry.place(x = posX + 80, y = posY + 20)
+
+        self.canvas.create_text(posX, posY + 40, anchor = NW, text = "Magia: ")
+        self.MagicEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.MagicEntry.place(x = posX + 80, y = posY + 40)
+
+        self.canvas.create_text(posX, posY + 60, anchor = NW, text = "Defensa: ")
+        self.DefEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.DefEntry.place(x = posX + 80, y = posY + 60)
+
+        self.canvas.create_text(posX, posY + 80, anchor = NW, text = "Inteligencia: ")
+        self.IntEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.IntEntry.place(x = posX + 80, y = posY + 80)
+
+        self.canvas.create_text(posX, posY + 100, anchor = NW, text = "Altura: ")
+        self.HeightEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.HeightEntry.place(x = posX + 80, y = posY + 100)
+
+        self.canvas.create_text(posX, posY + 120, anchor = NW, text = "Fuerza: ")
+        self.StrEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.StrEntry.place(x = posX + 80, y = posY + 120)
+
+        self.canvas.create_text(posX, posY + 140, anchor = NW, text = "Agilidad: ")
+        self.AglEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.AglEntry.place(x = posX + 80, y = posY + 140)
+
+        self.canvas.create_text(posX, posY + 160, anchor = NW, text = "Salto: ")
+        self.JumpEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.JumpEntry.place(x = posX + 80, y = posY + 160)
+
+        self.canvas.create_text(posX + 120, posY, anchor = NW, text = "Resistencia: ")
+        self.ResEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.ResEntry.place(x = posX + 200, y = posY)        
+
+        self.canvas.create_text(posX + 120, posY + 20, anchor = NW, text = "Flexibilidad: ")
+        self.FlexEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.FlexEntry.place(x = posX + 200, y = posY + 20)
+
+        self.canvas.create_text(posX + 120, posY + 40, anchor = NW, text = "Explosividad: ")
+        self.ExplEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.ExplEntry.place(x = posX + 200, y = posY + 40)
+
+        self.canvas.create_text(posX + 120, posY + 60, anchor = NW, text = "Carisma: ")
+        self.ChrsEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.ChrsEntry.place(x = posX + 200, y = posY + 60)
+
+        self.canvas.create_text(posX + 120, posY + 80, anchor = NW, text = "Habilidad: ")
+        self.AblEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.AblEntry.place(x = posX + 200, y = posY + 80)
+
+        self.canvas.create_text(posX + 120, posY + 100, anchor = NW, text = "Balance: ")
+        self.BlcEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.BlcEntry.place(x = posX + 200, y = posY + 100)
+
+        self.canvas.create_text(posX + 120, posY + 120, anchor = NW, text = "Sabiduría: ")
+        self.WsdEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.WsdEntry.place(x = posX + 200, y = posY + 120)
+
+        self.canvas.create_text(posX + 120, posY + 140, anchor = NW, text = "Suerte: ")
+        self.LckEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.LckEntry.place(x = posX + 200, y = posY + 140)
+
+        self.canvas.create_text(posX + 120, posY + 160, anchor = NW, text = "Coordinación: ")
+        self.CoordEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.CoordEntry.place(x = posX + 200, y = posY + 160)
+
+        self.canvas.create_text(posX + 240, posY, anchor = NW, text = "Amabilidad: ")
+        self.AmaEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.AmaEntry.place(x = posX + 320, y = posY)        
+
+        self.canvas.create_text(posX + 240, posY + 20, anchor = NW, text = "Lealtad: ")
+        self.LoyaltyEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.LoyaltyEntry.place(x = posX + 320, y = posY + 20)
+
+        self.canvas.create_text(posX + 240, posY + 40, anchor = NW, text = "Disciplina: ")
+        self.DscpEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.DscpEntry.place(x = posX + 320, y = posY + 40)
+
+        self.canvas.create_text(posX + 240, posY + 60, anchor = NW, text = "Liderazgo: ")
+        self.LdrEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.LdrEntry.place(x = posX + 320, y = posY + 60)
+
+        self.canvas.create_text(posX + 240, posY + 80, anchor = NW, text = "Prudencia: ")
+        self.PrdcEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.PrdcEntry.place(x = posX + 320, y = posY + 80)
+
+        self.canvas.create_text(posX + 240, posY + 100, anchor = NW, text = "Confianza: ")
+        self.TrustEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.TrustEntry.place(x = posX + 320, y = posY + 100)
+
+        self.canvas.create_text(posX + 240, posY + 120, anchor = NW, text = "Percepción: ")
+        self.PercEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.PercEntry.place(x = posX + 320, y = posY + 120)
+
+        self.canvas.create_text(posX + 240, posY + 140, anchor = NW, text = "Valentía: ")
+        self.CrgEntry = Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
+        self.CrgEntry.place(x = posX + 320, y = posY + 140)
+    
     def run(self):
         self.window.mainloop()
 
@@ -206,6 +209,73 @@ class AddWindow:
                 return False
         else:
             return False
+        
+    def checkStats(self):
+        strStats = []
+        strStats.append(self.PowerEntry.get())
+        strStats.append(self.SpeedEntry.get())
+        strStats.append(self.MagicEntry.get())
+        strStats.append(self.DefEntry.get())
+        strStats.append(self.IntEntry.get())
+        strStats.append(self.HeightEntry.get())
+        strStats.append(self.StrEntry.get())
+        strStats.append(self.AglEntry.get())
+        strStats.append(self.JumpEntry.get())
+        strStats.append(self.ResEntry.get())
+        strStats.append(self.FlexEntry.get())
+        strStats.append(self.ExplEntry.get())
+        strStats.append(self.ChrsEntry.get())
+        strStats.append(self.AblEntry.get())
+        strStats.append(self.BlcEntry.get())
+        strStats.append(self.WsdEntry.get())
+        strStats.append(self.LckEntry.get())
+        strStats.append(self.CoordEntry.get())
+        strStats.append(self.AmaEntry.get())
+        strStats.append(self.LoyaltyEntry.get())
+        strStats.append(self.DscpEntry.get())
+        strStats.append(self.LdrEntry.get())
+        strStats.append(self.PrdcEntry.get())
+        strStats.append(self.TrustEntry.get())
+        strStats.append(self.PercEntry.get())
+        strStats.append(self.CrgEntry.get())
+        checking = []
+        checking.append("Poder")
+        checking.append("Velocidad")
+        checking.append("Magia")
+        checking.append("Defensa")
+        checking.append("Inteligencia")
+        checking.append("Altura")
+        checking.append("Fuerza")
+        checking.append("Agilidad")
+        checking.append("Salto")
+        checking.append("Resistencia")
+        checking.append("Flexibilidad")
+        checking.append("Explosividad")
+        checking.append("Carisma")
+        checking.append("Habilidad")
+        checking.append("Balance")
+        checking.append("Sabiduría")
+        checking.append("Suerte")
+        checking.append("Coordinación")
+        checking.append("Amabilidad")
+        checking.append("Lealtad")
+        checking.append("Disciplina")
+        checking.append("Liderazgo")
+        checking.append("Prudencia")
+        checking.append("Confianza")
+        checking.append("Percepción")
+        checking.append("Valentía")
+        stats = []
+        for i in range(0, 25):
+            try: 
+                stat = int(strStats[i])
+                if abs(stat) > 100:
+                    messagebox.showerror("Error", f"El valor de {checking[i]} debe estar entre -100 y 100")
+                else:
+                    stats.append(stat)
+            except:
+                messagebox.showerror("Error", f"Valor inválido para {checking[i]}")
+        return stats
 
     def getImage(self):
         self.path = filedialog.askopenfilename()
@@ -229,11 +299,27 @@ class AddWindow:
 
     def addCard(self):
         name = self.NameEntry.get()
-        var = self.VarEntry.get()
         if len(name) < 5:
             messagebox.showerror("Error", "El nombre de la carta debe tener entre 5 y 30 caracteres")
-        elif len(var) < 5:
+            return
+        desc = self.DescText.get('1.0', 'end-1c')
+        var = self.VarEntry.get()
+        isMain = not self.isVar.get()
+        if not isMain and len(var) < 5:
             messagebox.showerror("Error", "El nombre de variante de la carta debe tener entre 5 y 30 caracteres")
+            return
+        race = self.race.get()
+        if race == "":
+            messagebox.showerror("Error", "Seleccione una raza para la carta")
+            return
+        rarity = self.rarity.get()
+        if rarity == "":
+            messagebox.showerror("Error", "Seleccione una rareza para la carta")
+            return
+        image = self.img
+        stats = self.checkStats()
+        if len(stats) < 26:
+            return
         else:
             self.caller.cards.append(Card(name, self.img))
             self.NameEntry.delete(0, END)
@@ -241,10 +327,8 @@ class AddWindow:
                 shutil.copy(self.path, self.savePath)
                 self.img = "noImage.jpg"
                 self.path = ""
-            self.listbox.insert(END, name)
             messagebox.showinfo("Éxito", f"Carta {name} agregada")
 
     def back(self):
         self.window.destroy()
-        self.caller.saveCards()
         self.caller.window.deiconify()
