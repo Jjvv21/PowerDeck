@@ -2,9 +2,10 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
+from PIL import Image
 import os, shutil
 
-from functions import loadImage
+from functions import *
 from Card import *
 
 class AddWindow:
@@ -312,7 +313,7 @@ class AddWindow:
                 messagebox.showerror("Error", "Tamaño de imagen incorrecto")
             else:
                 messagebox.showinfo("Éxito", "Imagen cargada")
-                self.selected_img = loadImage(img)
+                self.selected_img = loadExternalImage(self.path)
                 self.canvas.itemconfig("selection", image = self.selected_img)
         else:
             self.path = ""
