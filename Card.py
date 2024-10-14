@@ -1,4 +1,5 @@
 from datetime import date
+import uuid
 
 class Card:
     name = ""
@@ -10,13 +11,13 @@ class Card:
     race = ""
     rarity = ""
     image = ""
-    active_in_game = True
-    active_in_pulls = True
+    game_active = True
+    pull_active = True
     turn_power = 0
     bonus_power = 0
     stats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     total_power = 0
-    ID = 0
+    ID = ""
 
     def __init__(self, name, desc, var, isMain, race, rarity, image, turn_power, bonus_power):
         self.name = name
@@ -30,6 +31,8 @@ class Card:
         self.image = image
         self.turn_power = turn_power
         self.bonus_power = bonus_power
+        generated = uuid.uuid4().hex
+        self.ID = "C-" + generated[0: 12] + "-V-" + generated[12: 24]
 
     def setStats(self, stats):
         if len(stats) == 26:
@@ -40,3 +43,27 @@ class Card:
             
     def getName(self):
         return self.name
+    
+    def getVarName(self):
+        return self.variant_name
+    
+    def getRace(self):
+        return self.race
+    
+    def getRarity(self):
+        return self.rarity
+    
+    def gameActive(self):
+        return self.game_active
+    
+    def pullActive(self):
+        return self.pull_active
+    
+    def getID(self):
+        return self.ID
+
+    def lastMod(self):
+        return self.last_modification
+    
+    def getImage(self):
+        return self.image

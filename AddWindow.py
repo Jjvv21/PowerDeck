@@ -319,6 +319,40 @@ class AddWindow:
             self.path = ""
             messagebox.showerror("Error", "Seleccione una imagen (png o jpg)")
 
+    def clearEntries(self):
+        self.name_entry.delete(0, END)
+        self.var_entry.delete(0, END)
+        self.desc_text.delete(0, END)
+        self.turn_power_entry.delete(0, END)
+        self.bonus_power_entry.delete(0, END)
+        self.power_entry.delete(0, END)
+        self.speed_entry.delete(0, END)
+        self.magic_entry.delete(0, END)
+        self.defense_entry.delete(0, END)
+        self.intelligence_entry.delete(0, END)
+        self.height_entry.delete(0, END)
+        self.strenght_entry.delete(0, END)
+        self.agility_entry.delete(0, END)
+        self.jump_entry.delete(0, END)
+        self.resistance_entry.delete(0, END)
+        self.flexibility_entry.delete(0, END)
+        self.explosiveness_entry.delete(0, END)
+        self.charisma_entry.delete(0, END)
+        self.ability_entry.delete(0, END)
+        self.balance_entry.delete(0, END)
+        self.wisdom_entry.delete(0, END)
+        self.luck_entry.delete(0, END)
+        self.coordination_entry.delete(0, END)
+        self.kindness_entry.delete(0, END)
+        self.loyalty_entry.delete(0, END)
+        self.discipline_entry.delete(0, END)
+        self.leadership_entry.delete(0, END)
+        self.prudence_entry.delete(0, END)
+        self.trust_entry.delete(0, END)
+        self.perception_entry.delete(0, END)
+        self.courage_entry.delete(0, END)
+
+
     def addCard(self):
         name = self.name_entry.get()
         if len(name) < 5:
@@ -365,7 +399,6 @@ class AddWindow:
             return
 
         stats = self.checkStats()
-        print(stats)
         if len(stats) < 26:
             return
         
@@ -373,17 +406,22 @@ class AddWindow:
             for i in self.caller.cards:
                 if i.getName() == name:
                     isMain = False
+                    if i.getVarName() == var:
+                        messagebox.showerror("Error", f"La variante {var} de la carta {name} ya existe")
+                        return
+        
+        if image == "noImage.jpg":
+            messagebox.showerror("Error", "Seleccione una imagen para la carta")
+            return
+        shutil.copy(self.path, self.savePath)
+        self.img = "noImage.jpg"
+        self.path = ""
 
         newCard = Card(name, desc, var, isMain, race, rarity, image, turn_power, bonus_power)
         newCard.setStats(stats)
         self.caller.cards.append(newCard)
-        self.caller.saveCards()
-        self.name_entry.delete(0, END)
-        if image != "noImage.jpg":
-            shutil.copy(self.path, self.savePath)
-            self.img = "noImage.jpg"
-            self.path = ""
-        messagebox.showinfo("Éxito", f"Carta {name} agregada")
+        self.caller.saveCards()          
+        messagebox.showinfo("Éxito", f"Carta {name}, variante {var} agregada")
 
     def back(self):
         self.window.destroy()
