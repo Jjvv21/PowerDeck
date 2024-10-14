@@ -74,7 +74,10 @@ class AddWindow:
         self.select_img_button.place(x = 500, y = 150)
 
         self.add_button = Button(self.canvas, text = "Agregar Carta", command = self.addCard)
-        self.add_button.place(x = 70, y = 380)
+        self.add_button.place(x = 80, y = 400)
+
+        self.clear_button = Button(self.canvas, text = "Limpiar campos", command = self.clearEntries)
+        self.clear_button.place(x = 80, y = 430)
         
         self.back_button = Button(self.canvas, text = "Atrás", command = self.back)
         self.back_button.place(x = 760, y = 500)
@@ -315,14 +318,14 @@ class AddWindow:
                 messagebox.showinfo("Éxito", "Imagen cargada")
                 self.selected_img = loadExternalImage(self.path)
                 self.canvas.itemconfig("selection", image = self.selected_img)
-        else:
+        elif self.path != "":
             self.path = ""
             messagebox.showerror("Error", "Seleccione una imagen (png o jpg)")
 
     def clearEntries(self):
         self.name_entry.delete(0, END)
         self.var_entry.delete(0, END)
-        self.desc_text.delete(0, END)
+        self.desc_text.delete('1.0', 'end-1c')
         self.turn_power_entry.delete(0, END)
         self.bonus_power_entry.delete(0, END)
         self.power_entry.delete(0, END)
@@ -352,6 +355,11 @@ class AddWindow:
         self.perception_entry.delete(0, END)
         self.courage_entry.delete(0, END)
 
+        self.img = "noImage.jpg"
+        self.path = ""
+        self.selected_img = loadImage(self.img)
+        self.canvas.itemconfig("selection", image = self.selected_img)
+
 
     def addCard(self):
         name = self.name_entry.get()
@@ -361,7 +369,7 @@ class AddWindow:
         
         desc = self.desc_text.get('1.0', 'end-1c')
 
-        isMain = not self.isVar.get()
+        isVar = self.isVar.get()
 
         var = self.var_entry.get()
         if len(var) < 5:
@@ -402,10 +410,12 @@ class AddWindow:
         if len(stats) < 26:
             return
         
+        nameID = ""
         if len(self.caller.cards) > 0:
             for i in self.caller.cards:
                 if i.getName() == name:
-                    isMain = False
+                    isVar = True
+                    nameID = i.getID()[0: 14]
                     if i.getVarName() == var:
                         messagebox.showerror("Error", f"La variante {var} de la carta {name} ya existe")
                         return
@@ -414,10 +424,8 @@ class AddWindow:
             messagebox.showerror("Error", "Seleccione una imagen para la carta")
             return
         shutil.copy(self.path, self.savePath)
-        self.img = "noImage.jpg"
-        self.path = ""
 
-        newCard = Card(name, desc, var, isMain, race, rarity, image, turn_power, bonus_power)
+        newCard = Card(name, desc, var, not isVar, race, rarity, image, turn_power, bonus_power, nameID)
         newCard.setStats(stats)
         self.caller.cards.append(newCard)
         self.caller.saveCards()          
@@ -425,4 +433,5 @@ class AddWindow:
 
     def back(self):
         self.window.destroy()
+        self.caller.sortCards()
         self.caller.window.deiconify()

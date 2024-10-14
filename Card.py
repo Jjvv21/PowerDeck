@@ -4,7 +4,7 @@ import uuid
 class Card:
     name = ""
     description = ""
-    isMain = True
+    main = True
     variant_name = ""
     creation_date = None
     last_modification = None
@@ -17,12 +17,13 @@ class Card:
     bonus_power = 0
     stats = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     total_power = 0
-    ID = ""
+    nameID = ""
+    varID = ""
 
-    def __init__(self, name, desc, var, isMain, race, rarity, image, turn_power, bonus_power):
+    def __init__(self, name, desc, var, main, race, rarity, image, turn_power, bonus_power, nameID):
         self.name = name
         self.description = desc
-        self.isMain = isMain
+        self.main = main
         self.variant_name = var
         self.creation_date = date.today()
         self.last_modification = self.creation_date
@@ -32,7 +33,11 @@ class Card:
         self.turn_power = turn_power
         self.bonus_power = bonus_power
         generated = uuid.uuid4().hex
-        self.ID = "C-" + generated[0: 12] + "-V-" + generated[12: 24]
+        if nameID == "":
+            self.nameID = "C-" + generated[12: 24]
+        else:
+            self.nameID = nameID
+        self.varID = "V-" + generated[0: 12]
 
     def setStats(self, stats):
         if len(stats) == 26:
@@ -60,10 +65,13 @@ class Card:
         return self.pull_active
     
     def getID(self):
-        return self.ID
-
+        return self.nameID + "-" + self.varID
+    
     def lastMod(self):
         return self.last_modification
     
     def getImage(self):
         return self.image
+    
+    def isMain(self):
+        return self.main
