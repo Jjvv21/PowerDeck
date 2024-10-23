@@ -1,9 +1,9 @@
 from MainWindow import *
 
 def main():
-    root = Tk()
+    root = tk.Tk()
     root.title("PowerDeck")
-    root.resizable(width = NO, height = NO)
+    root.resizable(width = tk.NO, height = tk.NO)
     main = MainWindow(root)
     main.run()
 

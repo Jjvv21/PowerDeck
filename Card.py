@@ -1,5 +1,5 @@
 from datetime import date
-import uuid
+from KeyGeneration import generateKey
 
 class Card:
     name = ""
@@ -32,12 +32,11 @@ class Card:
         self.image = image
         self.turn_power = turn_power
         self.bonus_power = bonus_power
-        generated = uuid.uuid4().hex
         if nameID == "":
-            self.nameID = "C-" + generated[12: 24]
+            self.nameID = "C-" + generateKey()
         else:
             self.nameID = nameID
-        self.varID = "V-" + generated[0: 12]
+        self.varID = "V-" + generateKey()
 
     def setStats(self, stats):
         if len(stats) == 26:
