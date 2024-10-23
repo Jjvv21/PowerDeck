@@ -59,7 +59,8 @@ class CardAlbum:
         stats = []
         i = 0
         while i < 26:
-            stat_str = stats_strs[i - 1]
+            stat_str = stats_strs[i]
+            print(stat_str)
             if stat_str == "-" or stat_str == "":
                 break
             stat = int(stat_str)
@@ -68,6 +69,7 @@ class CardAlbum:
                 break
             stats.append(stat)
             i += 1
+        print(i)
         if len(stats) < 26:
             return -11 - i
         

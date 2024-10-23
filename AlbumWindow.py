@@ -17,7 +17,13 @@ class AlbumWindow:
         self.canvas = tk.Canvas(self.window, width = 800, height = 600)
         self.canvas.pack()
 
-        self.cards = []
+        self.scroll = tk.Scrollbar(self.canvas)
+        self.scroll.place(height = 700, x = 170, y = 50)
+        self.listbox = tk.Listbox(self.canvas, height = 30, width = 62, yscrollcommand = self.scroll.set)
+        self.listbox.place(x = 1, y = 50)
+        self.scroll.config(command = self.listbox.yview)
+
+        self.cards = cards
         if len(self.cards) > 0:
             for i in self.cards:
                 name = i.getName() + ", " + i.getVarName()
@@ -27,14 +33,6 @@ class AlbumWindow:
                     self.main_cards.append(i)
         else:
             messagebox.showerror("Error", "No existen cartas creadas")
-
-        self.scroll = tk.Scrollbar(self.canvas)
-        self.scroll.place(height = 700, x = 170, y = 50)
-        self.listbox = tk.Listbox(self.canvas, height = 30, width = 62, yscrollcommand = self.scroll.set)
-        self.listbox.place(x = 1, y = 50)
-        self.scroll.config(command = self.listbox.yview)
-
-        
 
         posX = 450
         self.canvas.create_text(posX, 50, anchor = tk.NW, text = "Nombre: ")
@@ -89,7 +87,7 @@ class AlbumWindow:
 
     def showSelection(self):
         if not self.filtering:
-            card = self.caller.cards[self.selected_card]
+            card = self.cards[self.selected_card]
         else:
             card = self.main_cards[self.selected_card]
 
@@ -166,7 +164,7 @@ class AlbumWindow:
     def showAll(self):
         self.listbox.delete(0, tk.END)
         self.filtering = False
-        for i in self.caller.cards:
+        for i in self.cards:
             name = i.getName() + ", " + i.getVarName()
             self.listbox.insert(tk.END, name)
         self.show_all_button.config(state = tk.DISABLED)
