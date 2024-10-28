@@ -1,10 +1,10 @@
-from MainWindow import *
+from LogInUI import *
 
 def main():
     root = tk.Tk()
-    root.title("PowerDeck")
+    root.title("Inicio de Sesión")
     root.resizable(width = tk.NO, height = tk.NO)
-    main = MainWindow(root)
+    main = LogInUI(root)
     main.run()
 
 if __name__ == "__main__":
