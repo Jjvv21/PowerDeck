@@ -31,6 +31,7 @@ class AlbumWindow:
                 main = i.isMain()
                 if main:
                     self.main_cards.append(i)
+            self.listbox.selection_set(0)
         else:
             messagebox.showerror("Error", "No existen cartas creadas")
 
@@ -70,7 +71,7 @@ class AlbumWindow:
         self.selected_img = self.ih.loadImage(self.image_name)
         self.canvas.create_image(posX + 10, 220, anchor = tk.NW, image = self.selected_img, tags = "card_img")
 
-        self.show_button = tk.Button(self.canvas, text = "Mostrar", command = self.selectCard)
+        self.show_button = tk.Button(self.canvas, text = "Mostrar", command = self.showSelection)
         self.show_button.place(x = 540, y = 560)
 
         self.filter_main_button = tk.Button(self.canvas, text = "Filtrar Principales", command = self.showMain)
@@ -86,6 +87,8 @@ class AlbumWindow:
         self.window.mainloop()
 
     def showSelection(self):
+        self.selected_card = self.listbox.curselection()[0]
+
         if not self.filtering:
             card = self.cards[self.selected_card]
         else:
@@ -142,13 +145,6 @@ class AlbumWindow:
         self.selected_img = self.ih.loadImage(card.getImage())
         self.canvas.itemconfig("card_img", image = self.selected_img)
 
-    def selectCard(self):
-        try:
-            self.selected_card = self.listbox.curselection()[0]
-            self.showSelection()
-        except:
-            messagebox.showerror("Error", "Seleccione una Carta para mostrar")
-
     def showMain(self):
         if len(self.main_cards) > 0:
             self.listbox.delete(0, tk.END)
@@ -156,6 +152,7 @@ class AlbumWindow:
             for i in self.main_cards:
                 name = i.getName() + ", " + i.getVarName()
                 self.listbox.insert(tk.END, name)
+            self.listbox.selection_set(0)
             self.filter_main_button.config(state = tk.DISABLED)
             self.show_all_button.config(state = tk.NORMAL)
         else:
@@ -167,6 +164,7 @@ class AlbumWindow:
         for i in self.cards:
             name = i.getName() + ", " + i.getVarName()
             self.listbox.insert(tk.END, name)
+        self.listbox.selection_set(0)
         self.show_all_button.config(state = tk.DISABLED)
         self.filter_main_button.config(state = tk.NORMAL)
 
