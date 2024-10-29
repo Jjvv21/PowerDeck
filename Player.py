@@ -56,3 +56,9 @@ class Player:
     def getCountry(self):
         return self.avatar
     
+    def receiveCard(self, card):
+        self.owned_cards.append(card)
+
+    def showCards(self):
+        return self.owned_cards
+    

@@ -10,7 +10,7 @@ class LogInUI:
 
     def __init__(self, window):
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 250, height = 150)
+        self.canvas = tk.Canvas(self.window, width = 250, height = 150, bg = "#78a090")
         self.canvas.pack()
 
         self.canvas.create_text(80, 10, anchor = tk.NW, text = "Inicio de Sesión")
@@ -47,7 +47,7 @@ class LogInUI:
             messagebox.showerror("Error", "Introduzca la contraseña")
             return
         
-        if not player.getPassword == password:
+        if not player.getPassword() == password:
             messagebox.showerror("Error", "Contraseña Incorrecta")
             return
         

@@ -8,13 +8,8 @@ class MainUI:
         self.caller = caller
         self.player = player
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 500, height = 500)
+        self.canvas = tk.Canvas(self.window, width = 500, height = 500, bg = "#78a090")
         self.canvas.pack()
-
-        try:
-            self.album.load()
-        except:
-            print("no cards found")
 
         self.play_button = tk.Button(self.canvas, text = "Jugar")
         self.play_button.place(x = 10, y = 390)

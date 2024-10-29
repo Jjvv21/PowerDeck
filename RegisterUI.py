@@ -6,13 +6,33 @@ from tkinter import filedialog
 from ImageHandler import *
 
 class RegisterUI:
-    countries = ["Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda",
-                 "Arabia Saudita", "Argelia", "Argentina", "Armenia", "Australia", "Austria",
-                 "Azerbaiyán", "Bahamas", "Bahrein", "Bangladesh", "Barbados", "Belarús", "Bélgica",
-                 "Belice", "Benin", "Bhután", "Bolivia", "Bosnia y Herzegovina", "Botswana",
-                 "Brasil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Camboya",
-                 "Camerún", "Canadá", "Chad", "Chile", "China", "Chipre", "Colombia", "Comoras",
-                 "Congo", "Costa Rica"]
+    countries = ['Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda',
+                'Arabia Saudita', 'Argelia', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaiyán',
+                'Bahamas', 'Bangladesh', 'Barbados', 'Baréin', 'Belice', 'Benín', 'Bielorrusia', 'Bolivia',
+                'Bosnia y Herzegovina', 'Botsuana', 'Brasil', 'Brunéi Darussalam', 'Bulgaria', 'Burkina Faso',
+                'Burundi', 'Bután', 'Bélgica', 'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Catar', 'Chad', 
+                'Chile', 'China', 'Chipre', 'Colombia', 'Comoras', 'Congo', 'Costa Rica', 'Costa de Marfil',
+                'Croacia', 'Cuba', 'Dinamarca', 'Dominica', 'Ecuador', 'Egipto', 'El Salvador', 
+                'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 
+                'Estados Unidos de América', 'Estonia', 'Esuatini', 'Etiopía', 'Federación Rusa', 'Filipinas',
+                'Finlandia', 'Fiyi', 'Francia', 'Gabón', 'Gambia', 'Georgia', 'Ghana', 'Granada', 'Grecia',
+                'Guatemala', 'Guinea', 'Guinea Ecuatorial', 'Guinea-Bisáu', 'Guyana', 'Haití', 'Honduras',
+                'Hungría', 'India', 'Indonesia', 'Irak', 'Irlanda', 'Irán', 'Islandia', 'Islas Marshall',
+                'Islas Salomón', 'Israel', 'Italia', 'Jamaica', 'Japón', 'Jordania', 'Kazajistán', 'Kenia',
+                'Kirguistán', 'Kiribati', 'Kuwait', 'Lesoto', 'Letonia', 'Liberia', 'Libia', 'Liechtenstein',
+                'Lituania', 'Luxemburgo', 'Líbano', 'Macedonia del Norte', 'Madagascar', 'Malasia', 'Malaui',
+                'Maldivas', 'Malta', 'Malí', 'Marruecos', 'Mauricio', 'Mauritania', 'Micronesia', 'Mongolia',
+                'Montenegro', 'Mozambique', 'Myanmar', 'México', 'Mónaco', 'Namibia', 'Nauru', 'Nepal',
+                'Nicaragua', 'Nigeria', 'Noruega', 'Nueva Zelanda', 'Níger', 'Omán', 'Pakistán', 'Palaos',
+                'Panamá', 'Papúa Nueva Guinea', 'Paraguay', 'Países Bajos', 'Perú', 'Polonia', 'Portugal',
+                'Reino Unido', 'República Centroafricana', 'República Checa', 'República Democrática Popular Lao',
+                'República Dominicana', 'República Unida de Tanzanía', 'República de Corea', 'República de Moldova',
+                'República Árabe Siria', 'Ruanda', 'Rumania', 'Samoa', 'San Cristóbal y Nieves', 'San Marino',
+                'San Vicente y las Granadinas', 'Santa Lucía', 'Santo Tomé y Príncipe', 'Senegal', 'Serbia',
+                'Seychelles', 'Sierra Leona', 'Singapur', 'Somalia', 'Sri Lanka', 'Sudáfrica', 'Sudán',
+                'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam', 'Tailandia', 'Tayikistán', 'Timor-Leste',
+                'Togo', 'Tonga', 'Trinidad y Tobago', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Túnez', 'Ucrania',
+                'Uganda', 'Uruguay', 'Uzbekistán', 'Vanuatu', 'Venezuela', 'Vietnam', 'Yemen', 'Yibuti', 'Zambia', 'Zimbabue'] 
     image_name = "noImage.jpg"
     path = ""
     img_handler = ImageHandler()
@@ -21,7 +41,7 @@ class RegisterUI:
         self.caller = caller
         self.player_manager = player_manager
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 550, height = 400)
+        self.canvas = tk.Canvas(self.window, width = 550, height = 400, bg = "#78a090")
         self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
@@ -36,17 +56,14 @@ class RegisterUI:
         self.username_entry.bind('<KeyPress>', self.usernameCharCount)
         self.username_entry.bind('<KeyRelease>', self.usernameCharCount) 
 
+        vcmd = (self.window.register(self.checkPassword), '%P')
         self.canvas.create_text(10, 90, anchor = tk.NW, text = "Contraseña: ")
-        self.password_entry = tk.Entry(self.canvas, width = 8)
-        self.password_entry.place(x = 150, y = 90)   
-        self.password_entry.bind('<KeyPress>', self.passwordCharCount)
-        self.password_entry.bind('<KeyRelease>', self.passwordCharCount) 
+        self.password_entry = tk.Entry(self.canvas, width = 8, validate = "key", validatecommand = vcmd)
+        self.password_entry.place(x = 150, y = 90)
 
         self.canvas.create_text(10, 110, anchor = tk.NW, text = "Confirmar Contraseña: ")
-        self.confirm_password_entry = tk.Entry(self.canvas, width = 8)
-        self.confirm_password_entry.place(x = 150, y = 110)   
-        self.confirm_password_entry.bind('<KeyPress>', self.confirmCharCount)
-        self.confirm_password_entry.bind('<KeyRelease>', self.confirmCharCount)
+        self.confirm_password_entry = tk.Entry(self.canvas, width = 8, validate = "key", validatecommand = vcmd)
+        self.confirm_password_entry.place(x = 150, y = 110)
 
         self.canvas.create_text(10, 130, anchor = tk.NW, text = "Correo: ")
         self.mail_entry = tk.Entry(self.canvas, width = 30)
@@ -62,6 +79,9 @@ class RegisterUI:
         self.select_img_button = tk.Button(self.canvas, text = "Seleccionar Imagen", command = self.getImage)
         self.select_img_button.place(x = 300, y = 50)
 
+        self.back_button = tk.Button(self.canvas, text = "Registrar", command = self.createPlayer)
+        self.back_button.place(x = 40, y = 350)
+
         self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
         self.back_button.place(x = 490, y = 370)
 
@@ -75,15 +95,16 @@ class RegisterUI:
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
-    def passwordCharCount(self, event):
-        count = len(self.password_entry.get())
-        if count >= 8 and event.keysym not in {'BackSpace', 'Delete'}:
-            return 'break'
-
-    def confirmCharCount(self, event):
-        count = len(self.confirm_password_entry.get())
-        if count >= 8 and event.keysym not in {'BackSpace', 'Delete'}:
-            return 'break'
+    def checkPassword(self, P):
+        if P == "":
+            return True
+        elif len(P) <= 8:
+            if str.isalnum(P):
+                return True
+            else:
+                return False
+        else:
+            return False
         
     def getImage(self):
         self.path = filedialog.askopenfilename()
@@ -119,9 +140,6 @@ class RegisterUI:
 
         result = self.player_manager.add(name, username, password, mail, country, image)
         match result:
-            case 0:
-                messagebox.showinfo("Éxito", f"Jugador {username} creado")
-                self.back()
             case -1:
                 messagebox.showerror("Error", "El nombre debe tener entre 5 y 30 caracteres")
             case -2:
@@ -138,6 +156,17 @@ class RegisterUI:
                 messagebox.showerror("Error", "Contraseña inválida, debe ser alfanumérica")
             case -8:
                 messagebox.showerror("Error", "Seleccione un país")
+            case _:
+                player = self.player_manager.getPlayer(result)
+                received_cards = player.showCards()
+                received_cards_str = "Cartas iniciales: "
+                for i in received_cards:
+                    received_cards_str += "\n -"
+                    received_cards_str += i.getName()
+                    received_cards_str += ", "
+                    received_cards_str += i.getVariantName()
+                messagebox.showinfo("Éxito", f"Jugador {username} creado \n" + received_cards_str)
+                self.back()
         
     def run(self):
         self.window.mainloop()
