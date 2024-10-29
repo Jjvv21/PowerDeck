@@ -51,6 +51,8 @@ class LogInUI:
             messagebox.showerror("Error", "Contraseña Incorrecta")
             return
         
+        self.mail_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)
         self.toMainUI(player)
     
     def toMainUI(self, player):
@@ -63,6 +65,9 @@ class LogInUI:
 
     def toRegisterUI(self):
         self.window.withdraw()
+        self.mail_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)
+        
         register_window = tk.Toplevel()
         register_window.title("Registro")
         register_window.resizable(width = tk.NO, height = tk.NO)

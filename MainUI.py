@@ -11,14 +11,17 @@ class MainUI:
         self.canvas = tk.Canvas(self.window, width = 500, height = 500, bg = "#78a090")
         self.canvas.pack()
 
+        self.canvas.create_text(200, 5, anchor = tk.NW, text = "PowerDeck")
+        self.canvas.create_text(200, 25, anchor = tk.NW, text = f"Bienvenido {self.player.getUser()}")
+
         self.play_button = tk.Button(self.canvas, text = "Jugar")
-        self.play_button.place(x = 10, y = 390)
+        self.play_button.place(x = 100, y = 80)
 
         self.deck_button = tk.Button(self.canvas, text = "Crear Deck", command = self.toDeckCreation)
-        self.deck_button.place(x = 100, y = 390)
+        self.deck_button.place(x = 100, y = 100)
 
         self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
-        self.back_button.place(x = 100, y = 390)
+        self.back_button.place(x = 100, y = 120)
 
     def toDeckCreation(self):
         self.window.withdraw()
