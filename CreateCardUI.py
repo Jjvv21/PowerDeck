@@ -5,10 +5,10 @@ from tkinter import messagebox
 
 from ImageHandler import *
 
-class AddWindow:
+class CreateCardUI:
     image_name = "noImage.jpg"
     path = ""
-    ih = ImageHandler()
+    img_handler = ImageHandler()
     races = ["Raza1", "Raza2", "Raza3", "Raza4", "Raza5"]
     rarities = ["Ultra-Rara", "Muy Rara", "Rara", "Normal", "Básica"]
 
@@ -16,7 +16,7 @@ class AddWindow:
         self.caller = caller
         self.album = album
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 800, height = 600)
+        self.canvas = tk.Canvas(self.window, width = 750, height = 550, bg = "#78a090")
         self.canvas.pack()
 
         self.canvas.create_text(200, 5, anchor = tk.NW, text = "Crear Carta")
@@ -34,7 +34,7 @@ class AddWindow:
         self.var_entry.bind('<KeyRelease>', self.varCharCount) 
 
         self.isVar = tk.BooleanVar(self.canvas)
-        self.var_check = ttk.Checkbutton(self.canvas, text= "Variante", variable = self.isVar, state = tk.DISABLED)
+        self.var_check = ttk.Checkbutton(self.canvas, text = "Variante", variable = self.isVar, state = tk.DISABLED)
         self.var_check.place(x = 160, y = 90)
 
         self.canvas.create_text(10, 90, anchor = tk.NW, text = "Raza: ")
@@ -51,7 +51,7 @@ class AddWindow:
         self.desc_text.bind('<KeyPress>', self.descCharCount)
         self.desc_text.bind('<KeyRelease>', self.descCharCount)
         self.scroll = tk.Scrollbar(self.canvas)
-        self.scroll.place(height = 10, x = 750, y = 50)
+        self.scroll.place(height = 83, x = 725, y = 51)
         self.scroll.config(command = self.desc_text.yview)
     	
         vcmd = (self.window.register(self.checkNum), '%P')
@@ -65,20 +65,20 @@ class AddWindow:
 
         self.placeStatEntries(10, 200)
 
-        self.selected_img = self.ih.loadImage("noImage.jpg")
+        self.selected_img = self.img_handler.loadImage("noImage.jpg")
         self.canvas.create_image(450, 180, anchor = tk.NW, image = self.selected_img, tags = "selection")
 
         self.select_img_button = tk.Button(self.canvas, text = "Seleccionar Imagen", command = self.getImage)
         self.select_img_button.place(x = 500, y = 150)
 
-        self.add_button = tk.Button(self.canvas, text = "Agregar Carta", command = self.addCard)
-        self.add_button.place(x = 80, y = 400)
+        self.add_button = tk.Button(self.canvas, text = "Crear Carta", command = self.createCard)
+        self.add_button.place(x = 100, y = 400)
 
-        self.clear_button = tk.Button(self.canvas, text = "Limpiar campos", command = self.clearEntries)
-        self.clear_button.place(x = 80, y = 430)
+        self.clear_button = tk.Button(self.canvas, text = "Reiniciar", command = self.clearEntries)
+        self.clear_button.place(x = 100, y = 430)
         
-        self.back_button = tk.Button(self.canvas, text = "Atrás", command = self.back)
-        self.back_button.place(x = 760, y = 500)
+        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
+        self.back_button.place(x = 690, y = 520)
 
     def placeStatEntries(self, posX, posY):
         vcmd = (self.window.register(self.checkStatNum), '%P')
@@ -185,9 +185,6 @@ class AddWindow:
         self.canvas.create_text(posX + 240, posY + 140, anchor = tk.NW, text = "Valentía: ")
         self.courage_entry = tk.Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
         self.courage_entry.place(x = posX + 320, y = posY + 140)
-    
-    def run(self):
-        self.window.mainloop()
 
     def nameCharCount(self, event):
         count = len(self.name_entry.get())
@@ -263,7 +260,7 @@ class AddWindow:
 
     def getImage(self):
         self.path = filedialog.askopenfilename()
-        isImage = self.ih.checkImage(self.path)
+        isImage = self.img_handler.checkImage(self.path)
         match isImage:
             case -1:
                 return
@@ -274,9 +271,9 @@ class AddWindow:
                 messagebox.showerror("Error", "Tamaño de imagen incorrecto")
                 self.path = ""
             case _:
-                self.selected_img = self.ih.loadExternalImage(self.path)
+                self.selected_img = self.img_handler.loadExternalImage(self.path)
                 self.canvas.itemconfig("selection", image = self.selected_img)
-                self.image_name = self.path[-isImage]
+                self.image_name = self.path[-isImage:]
                 messagebox.showinfo("Éxito", "Imagen cargada")          
 
     def clearEntries(self):
@@ -314,11 +311,11 @@ class AddWindow:
 
         self.image_name = "noImage.jpg"
         self.path = ""
-        self.selected_img = self.ih.loadImage(self.image_name)
+        self.selected_img = self.img_handler.loadImage(self.image_name)
         self.canvas.itemconfig("selection", image = self.selected_img)
 
 
-    def addCard(self):
+    def createCard(self):
         name = self.name_entry.get()
         desc = self.desc_text.get('1.0', 'end-1c')
         var = self.var_entry.get()
@@ -334,11 +331,11 @@ class AddWindow:
             case 0:
                 messagebox.showinfo("Éxito", f"Carta {name}, {var} agregada")
                 self.var_check.state(["!selected"])
-                self.ih.saveImage(self.path)
+                self.img_handler.saveImage(self.path)
             case 1:
                 messagebox.showinfo("Éxito", f"Variante {name}, {var} agregada")
                 self.var_check.state(["selected"])
-                self.ih.saveImage(self.path)
+                self.img_handler.saveImage(self.path)
             case -1:
                 messagebox.showerror("Error", "El nombre de la carta debe tener entre 5 y 30 caracteres")
             case -2:
@@ -463,6 +460,9 @@ class AddWindow:
                 messagebox.showerror("Error", "El valor de Percepción debe estar entre -100 y 100")
             case -62:
                 messagebox.showerror("Error", "El valor de Valentía debe estar entre -100 y 100")
+
+    def run(self):
+        self.window.mainloop()
 
     def back(self):
         self.window.destroy()

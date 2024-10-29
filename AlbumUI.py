@@ -3,10 +3,10 @@ from tkinter import messagebox
 
 from ImageHandler import *
 
-class AlbumWindow:
+class AlbumUI:
     selected_card = 0
     image_name = "noImage.jpg"
-    ih = ImageHandler()
+    img_handler = ImageHandler()
     filtering = False
     cards = []
     main_cards = []
@@ -14,19 +14,19 @@ class AlbumWindow:
     def __init__(self, window, caller, cards):
         self.caller = caller
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 800, height = 600)
+        self.canvas = tk.Canvas(self.window, width = 800, height = 600, bg = "#78a090")
         self.canvas.pack()
 
         self.scroll = tk.Scrollbar(self.canvas)
-        self.scroll.place(height = 700, x = 170, y = 50)
+        self.scroll.place(height = 484, x = 386, y = 50)
         self.listbox = tk.Listbox(self.canvas, height = 30, width = 62, yscrollcommand = self.scroll.set)
-        self.listbox.place(x = 1, y = 50)
+        self.listbox.place(x = 9, y = 50)
         self.scroll.config(command = self.listbox.yview)
 
         self.cards = cards
         if len(self.cards) > 0:
             for i in self.cards:
-                name = i.getName() + ", " + i.getVarName()
+                name = i.getName() + ", " + i.getVariantName()
                 self.listbox.insert(tk.END, name)
                 main = i.isMain()
                 if main:
@@ -68,7 +68,7 @@ class AlbumWindow:
         self.mod_date_entry = tk.Entry(self.canvas, width = 10, state = "readonly")
         self.mod_date_entry.place(x = posX + 140, y = 190)
 
-        self.selected_img = self.ih.loadImage(self.image_name)
+        self.selected_img = self.img_handler.loadImage(self.image_name)
         self.canvas.create_image(posX + 10, 220, anchor = tk.NW, image = self.selected_img, tags = "card_img")
 
         self.show_button = tk.Button(self.canvas, text = "Mostrar", command = self.showSelection)
@@ -101,7 +101,7 @@ class AlbumWindow:
 
         self.var_entry.config(state = "normal")
         self.var_entry.delete(0, tk.END)
-        self.var_entry.insert(0, card.getVarName())
+        self.var_entry.insert(0, card.getVariantName())
         self.var_entry.config(state = "readonly")
 
         self.race_entry.config(state = "normal")
@@ -142,7 +142,7 @@ class AlbumWindow:
         self.mod_date_entry.insert(0, card.lastMod())
         self.mod_date_entry.config(state = "readonly")
 
-        self.selected_img = self.ih.loadImage(card.getImage())
+        self.selected_img = self.img_handler.loadImage(card.getImage())
         self.canvas.itemconfig("card_img", image = self.selected_img)
 
     def showMain(self):
@@ -150,7 +150,7 @@ class AlbumWindow:
             self.listbox.delete(0, tk.END)
             self.filtering = True
             for i in self.main_cards:
-                name = i.getName() + ", " + i.getVarName()
+                name = i.getName() + ", " + i.getVariantName()
                 self.listbox.insert(tk.END, name)
             self.listbox.selection_set(0)
             self.filter_main_button.config(state = tk.DISABLED)
@@ -162,7 +162,7 @@ class AlbumWindow:
         self.listbox.delete(0, tk.END)
         self.filtering = False
         for i in self.cards:
-            name = i.getName() + ", " + i.getVarName()
+            name = i.getName() + ", " + i.getVariantName()
             self.listbox.insert(tk.END, name)
         self.listbox.selection_set(0)
         self.show_all_button.config(state = tk.DISABLED)
