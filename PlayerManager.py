@@ -43,7 +43,7 @@ class PlayerManager:
         if len(password) < 6:
             return -6
 
-        if self.checkPassword(password):
+        if not self.checkPassword(password):
             return -7        
         
         if country == "":
@@ -66,7 +66,7 @@ class PlayerManager:
         for char in password:
             if str.isalpha(char):
                 alpha = True
-            elif str.isdecimal(char):
+            elif str.isnumeric(char):
                 num = True
             if alpha and num:
                 break

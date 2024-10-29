@@ -161,11 +161,12 @@ class RegisterUI:
                 received_cards = player.showCards()
                 received_cards_str = "Cartas iniciales: "
                 for i in received_cards:
-                    received_cards_str += "\n -"
+                    received_cards_str += "\n - "
                     received_cards_str += i.getName()
                     received_cards_str += ", "
                     received_cards_str += i.getVariantName()
                 messagebox.showinfo("Éxito", f"Jugador {username} creado \n" + received_cards_str)
+                self.player_manager.save()
                 self.back()
         
     def run(self):
