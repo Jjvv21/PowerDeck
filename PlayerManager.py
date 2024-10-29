@@ -23,19 +23,21 @@ class PlayerManager:
         if len(username) < 5:
             return -2
         
+        if mail == "":
+            return -3
+        
         if len(self.players) > 0:
             for i in self.players:
                 if i.getUser() == username:
-                    return -3
+                    return -4
+                if i.getMail() == mail:
+                    return -5
         
-        if password == "":
-            return -4
-        
-        if mail == "":
-            return -5
+        if len(password) < "":
+            return -6        
         
         if country == "":
-            return -5
+            return -8
         
         newPlayer = Player()
         newPlayer.setName(name)

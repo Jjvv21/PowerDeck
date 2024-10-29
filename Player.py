@@ -6,12 +6,14 @@ class Player:
     username = ""
     password = ""
     mail = ""
-    contry = ""
+    country = ""
+    avatar = ""
     registration_date = ""
     player_id = ""
     username_id = ""
     exp = 0
     owned_cards = []
+    decks = []
 
     def __init__(self):
         self.registration_date = date.today()
@@ -47,3 +49,10 @@ class Player:
 
     def getCountry(self):
         return self.country
+    
+    def setAvatar(self, image):
+        self.avatar = image
+
+    def getCountry(self):
+        return self.avatar
+    
