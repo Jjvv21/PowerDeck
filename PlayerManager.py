@@ -6,7 +6,7 @@ from DeckBuilder import *
 
 class PlayerManager:
     players = []
-    save_file = "player_accounts.txt"
+    save_file = "gamedata\player_accounts.txt"
     album = CardAlbum()
 
     def __init__(self):

@@ -62,3 +62,30 @@ class Player:
     def showCards(self):
         return self.owned_cards
     
+    def sortCards(self):
+        order = []
+        for i in self.owned_cards:
+            name = i.getName().lower()
+            var = i.getVariantName().lower()
+            order.append(name + var)
+        order.sort()
+
+        sorted_cards = []
+        for j in range(0, len(order)):
+            for k in self.owned_cards:
+                name = k.getName().lower()
+                var = k.getVariantName().lower()
+                if (name + var) == order[j]:
+                    sorted_cards.append(k)
+
+        self.owned_cards = sorted_cards
+
+    def addDeck(self, deck):
+        if len(self.decks) > 15:
+            return -1
+            
+        self.decks.append(deck)
+        return 0
+
+    def showDecks(self):
+        return self.decks         

@@ -41,7 +41,7 @@ class RegisterUI:
         self.caller = caller
         self.player_manager = player_manager
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 550, height = 400, bg = "#78a090")
+        self.canvas = tk.Canvas(self.window, width = 550, height = 450, bg = "#78a090")
         self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
@@ -80,10 +80,10 @@ class RegisterUI:
         self.select_img_button.place(x = 300, y = 50)
 
         self.back_button = tk.Button(self.canvas, text = "Registrar", command = self.createPlayer)
-        self.back_button.place(x = 40, y = 350)
+        self.back_button.place(x = 50, y = 320)
 
         self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 490, y = 370)
+        self.back_button.place(x = 490, y = 330)
 
     def nameCharCount(self, event):
         count = len(self.name_entry.get())
@@ -165,7 +165,7 @@ class RegisterUI:
                     received_cards_str += i.getName()
                     received_cards_str += ", "
                     received_cards_str += i.getVariantName()
-                messagebox.showinfo("Éxito", f"Jugador {username} creado \n" + received_cards_str)
+                messagebox.showinfo("Éxito", f"Jugador {username} creado \n \n" + received_cards_str)
                 self.player_manager.save()
                 self.back()
         
