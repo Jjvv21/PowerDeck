@@ -10,7 +10,7 @@ class Deck:
     def __init__(self, name, cards):
         self.name = name
 
-        self.creation_date = date.today
+        self.creation_date = date.today()
         id = "D-" + generateKey()
 
         self.addCards(cards)

@@ -96,19 +96,43 @@ class PlayerManager:
                         Bs.append(i)
         
         deck_builder = DeckBuilder()
-        max_cards = deck_builder.getMaxCards()
-        for j in range(0, max_cards):
-            rng = random.randint(1, 100)
-            if rng <= 5:
-                player.receiveCard(URs.pop(0))
-            elif rng <= 17:
-                player.receiveCard(MRs.pop(0))
-            elif rng <= 35:
-                player.receiveCard(Rs.pop(0))
-            elif rng <= 60:
-                player.receiveCard(Ns.pop(0))
+        maxs = deck_builder.getMaxCards()
+        max_cards = maxs[0]
+        max_urs = maxs[1]
+        max_mrs = maxs[2]
+        max_rs = maxs[3]
+        max_ns = maxs[4]
+        max_bs = maxs[5]
+
+        cards_to_give = []
+        urs = 0
+        mrs = 0
+        rs = 0
+        ns = 0
+        bs = 0
+        min_index = 1
+        max_index = 100
+        while len(cards_to_give) < max_cards:
+            rng = random.randint(min_index, max_index)
+            if rng <= 5 and urs < max_urs:
+                cards_to_give.append(URs.pop(0))
+                urs += 1
+            elif rng <= 17 and mrs < max_mrs:
+                cards_to_give.append(MRs.pop(0))
+                mrs += 1
+            elif rng <= 35 and rs < max_rs:
+                cards_to_give.append(Rs.pop(0))
+                rs += 1
+            elif rng <= 60 and ns < max_ns:
+                    cards_to_give.append(Ns.pop(0))
+                    ns += 1
             else:
-                player.receiveCard(Bs.pop(0))
+                if bs < max_bs:
+                    cards_to_give.append(Bs.pop(0))
+                    bs += 1
+
+        for j in cards_to_give:
+            player.receiveCard(j)
     
     def exists(self, mail):
         for i in range(0, len(self.players)):

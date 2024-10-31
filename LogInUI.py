@@ -60,7 +60,7 @@ class LogInUI:
         main_window = tk.Toplevel()
         main_window.title("PowerDeck")
         main_window.resizable(width = tk.NO, height = tk.NO)
-        main_ui = MainUI(main_window, self, player)
+        main_ui = MainUI(main_window, self, self.player_manager, player)
         main_ui.run()
 
     def toRegisterUI(self):

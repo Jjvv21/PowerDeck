@@ -4,8 +4,9 @@ from AddDeckUI import *
 
 class MainUI:
 
-    def __init__(self, window, caller, player):
+    def __init__(self, window, caller, player_manager, player):
         self.caller = caller
+        self.player_manager = player_manager
         self.player = player
         self.window = window
         self.canvas = tk.Canvas(self.window, width = 500, height = 500, bg = "#78a090")
@@ -28,7 +29,7 @@ class MainUI:
         deck_creation_window = tk.Toplevel()
         deck_creation_window.title("Creación de Decks")
         deck_creation_window.resizable(width = tk.NO, height = tk.NO)
-        deck_creation_ui = AddDeckUI(deck_creation_window, self, self.player)
+        deck_creation_ui = AddDeckUI(deck_creation_window, self, self.player_manager, self.player)
         deck_creation_ui.run()
 
     def run(self):

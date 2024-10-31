@@ -58,6 +58,7 @@ class Player:
     
     def receiveCard(self, card):
         self.owned_cards.append(card)
+        self.sortCards()
 
     def showCards(self):
         return self.owned_cards

@@ -7,8 +7,9 @@ class AddDeckUI:
     cards = []
     decks = []
 
-    def __init__(self, window, caller, player):
+    def __init__(self, window, caller, player_manager, player):
         self.caller = caller
+        self.player_manager = player_manager
         self.player = player
         self.window = window
         self.canvas = tk.Canvas(self.window, width = 800, height = 600, bg = "#78a090")
@@ -61,10 +62,9 @@ class AddDeckUI:
             return
 
         cards_indexes = self.cards_listbox.curselection()
-        print(cards_indexes)
         max_cards = self.deck_builder.getMaxCards()
-        if len(cards_indexes) != max_cards:
-            messagebox.showerror("Error", f"Un deck debe tener exactamente {max_cards} cartas")
+        if len(cards_indexes) != max_cards[0]:
+            messagebox.showerror("Error", f"Un deck debe tener exactamente {max_cards[0]} cartas")
             return
         
         selected_cards = []
@@ -97,6 +97,7 @@ class AddDeckUI:
             case _:        
                 messagebox.showinfo("Éxito", "Deck creado")
                 self.updateDecks()
+                self.player_manager.save()
                 return
             
     def updateDecks(self):
@@ -124,7 +125,7 @@ class AddDeckUI:
                 cards_str += i.getName()
                 cards_str += ", "
                 cards_str += i.getVariantName()
-            messagebox.showinfo("Deck", f"{deck.getName()}:\n \n" + cards_str + "\n \n" + valid + "\n" + deck.getCreationDate())
+            messagebox.showinfo("Deck", f"{deck.getName()}:\n \n" + cards_str + f"\n \nFecha de creación: {deck.getCreationDate()}\n" + valid)
 
     def run(self):
         self.window.mainloop()

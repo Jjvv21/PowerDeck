@@ -4,7 +4,7 @@ from Card import *
 
 class CardAlbum:
     cards = []
-    save_file = "cards.txt"
+    save_file = "gamedata\cards.txt"
 
     def __init__(self):
         file = open(self.save_file, "rb")
