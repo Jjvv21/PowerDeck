@@ -30,13 +30,20 @@ class PlayerManager:
         pickle.dump(self.players, file)
         file.close()
 
-    def add(self, name, username, password, mail, country, image):
+    def add(self, player_info):
         """
         add receives a list with the player info, checks if the values are valid, returning with
         a diferent negative number when it finds an error, if all data is acceptable creates.
 
+        :player_info: list with the player's name, username, password, mail, country and image.
         :return: Negative number corresponding to an error, index of the created player otherwise.
         """
+        name = player_info[0]
+        username = player_info[1]
+        password = player_info[2]
+        mail = player_info[3]
+        country = player_info[4]
+        image = player_info[5]
         if len(name) < 5:
             return -1
         
@@ -75,10 +82,11 @@ class PlayerManager:
     
     def checkPassword(self, password):
         """
-        checkPassword receives a string with a password, checks every character in the password
-        to verify that theres is at least one alphabetic character and one numeric character 
-        the new player and adds it to the list, then returns the index for the created player.
-
+        checkPassword checks every character in a password to verify that theres is at least 
+        one alphabetic character and one numeric character the new player and adds it to the list,
+        then returns the index for the created player.
+        
+        :password: string with the password to check.
         :return: True if there are both alphabetic and numeric charaters, False otherwise.
         """
         alpha = False
@@ -93,6 +101,14 @@ class PlayerManager:
         return alpha and num
     
     def startingCards(self, player):
+        """
+        startingCards gets all the game cards on a list to shuffle it, then takes all main, active cards
+        and sets them in different list depending on their rarity, then gets the maximun cards for one
+        deck and the quantities of different rarities allowed on a deck, using this data gives the player
+        the required cards to create a deck.
+
+        :player: player that is receiving the cards.
+        """
         cards = self.album.getCards()
         random.shuffle(cards)
         URs = []
@@ -130,10 +146,8 @@ class PlayerManager:
         rs = 0
         ns = 0
         bs = 0
-        min_index = 1
-        max_index = 100
         while len(cards_to_give) < max_cards:
-            rng = random.randint(min_index, max_index)
+            rng = random.randint(1, 100)
             if rng <= 5 and urs < max_urs:
                 cards_to_give.append(URs.pop(0))
                 urs += 1
@@ -155,11 +169,25 @@ class PlayerManager:
             player.receiveCard(j)
     
     def exists(self, mail):
+        """
+        exists checks if a given mail corresponds to any mail
+        in the saved players.
+
+        :mail: string with the mail to search.
+        :return: -1 if the mail is not found, index for the location of the player otherwise.
+        """
         for i in range(0, len(self.players)):
             if self.players[i].getMail() == mail:
                 return i
         return -1
 
     def getPlayer(self, index):
+        """
+        getPlayer receives a string with a mail, checks if the mail corresponds to any mail
+        in the saved players.
+
+        :index: index where the desired player is.
+        :return: player at the given index.
+        """
         return self.players[index]
         

@@ -33,6 +33,8 @@ class CardAlbum:
         returning with a diferent number when it finds an error, if all data is acceptable creates 
         the new card and adds it to the list, which is sorted and saved.
 
+        :card_info: list with name, description, variant name, race, rarity, image, turn power and bonus power.
+        :stats_str: list with a string for every stat.        
         :return: Number corresponding to the result of the creation.
         """
         name = card_info[0]
@@ -113,8 +115,9 @@ class CardAlbum:
 
     def sort(self):
         """
-        sorts adds all cards names in lowercase in a list to use python's sort, then checks the name of the cards
-        to place them in the order obtained with the sort and updates the album list.
+        sorts adds all cards names in lowercase to a list to use python's sort, 
+        then checks the name of the cards to place them in the order obtained with 
+        the sort and updates the album list.
         """
         order = []
         for i in self.cards:

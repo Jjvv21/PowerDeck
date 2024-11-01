@@ -9,6 +9,11 @@ class DeckBuilder:
     max_bs = round(max_cards*0.3)
 
     def __init__(self):
+        """
+        Constructor that intializes the deck builder, it checks if the calculated maximum
+        for each rarity exceeds or is less than the number of cards needed for a deck, and
+        if so it changes the basic maximum to fix this.
+        """
         totals = self.max_urs + self.max_mrs + self.max_rs + self.max_ns + self.max_bs
         if totals < self.max_cards:
             self.max_bs += self.max_cards - totals
@@ -16,10 +21,27 @@ class DeckBuilder:
             self.max_bs -= totals - self.max_cards
 
     def getMaxCards(self):
+        """
+        getMaxCards adds the total number of cards and the maximum number for each
+        rarity to a list to return it.
+
+        :return: list with the maximum number of cards, ultrarares, veryrares, rares, normals and basics.
+        """
         maxs = [self.max_cards, self.max_urs, self.max_mrs, self.max_rs, self.max_ns, self.max_bs]
         return maxs
     
     def createDeck(self, player, name, cards):
+        """
+        createDeck checks if the player has any space for a new deck, then checks if there are any
+        repeated cards (a main and a variant) and the number of cards of each rarity to verify the
+        maximum of each is not surpassed, if all cards are valid the deck is created and given to 
+        the player.
+
+        :player: player that is creating the deck.
+        :name: string with the name of the deck.
+        :cards: list of cards to be added to the deck.
+        :return: int corresponding to the result of the creation.
+        """
         if len(player.showDecks()) >= 15:
             return -1
 

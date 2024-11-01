@@ -158,20 +158,21 @@ class RegisterUI:
         createPlayer gets the information from the entries, checks if the two passwords are the same
         and if so, tries to have the player_manager create the player with the info, notifying the result.
         """
-        name = self.name_entry.get()
-        username = self.username_entry.get()
+        player_info = []
+        player_info.append(self.name_entry.get())
+        player_info.append(self.username_entry.get())
 
-        password = self.password_entry.get()
+        player_info.append(self.password_entry.get())
         password_confirmation = self.confirm_password_entry.get()
-        if password != password_confirmation:
+        if player_info[2] != password_confirmation:
             messagebox.showerror("Error", "Las contraseñas no coinciden")
             return
         
-        mail = self.mail_entry.get()
-        country = self.country_combo.get()
-        image = self.image_name
+        player_info.append(self.mail_entry.get())
+        player_info.append(self.country_combo.get())
+        player_info.append(self.image_name)
 
-        result = self.player_manager.add(name, username, password, mail, country, image)
+        result = self.player_manager.add(player_info)
         match result:
             case -1:
                 messagebox.showerror("Error", "El nombre debe tener entre 5 y 30 caracteres")
@@ -198,7 +199,7 @@ class RegisterUI:
                     received_cards_str += i.getName()
                     received_cards_str += ", "
                     received_cards_str += i.getVariantName()
-                messagebox.showinfo("Éxito", f"Jugador {username} creado \n \n" + received_cards_str)
+                messagebox.showinfo("Éxito", f"Jugador {player_info[1]} creado \n \n" + received_cards_str)
                 self.player_manager.save()
                 self.back()
         
