@@ -13,6 +13,13 @@ class CreateCardUI:
     rarities = ["Ultra-Rara", "Muy Rara", "Rara", "Normal", "Básica"]
 
     def __init__(self, window, caller, album):
+        """
+        Constructor that intializes and places most of the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :album: manager for the cards info.
+        """
         self.caller = caller
         self.album = album
         self.window = window
@@ -81,6 +88,12 @@ class CreateCardUI:
         self.back_button.place(x = 690, y = 520)
 
     def placeStatEntries(self, posX, posY):
+        """
+        placeStatEntries intializes and places texts and entries for the card stats.
+
+        :posX: starting X position.
+        :posY: strating Y position.
+        """
         vcmd = (self.window.register(self.checkStatNum), '%P')
         self.canvas.create_text(posX, posY, anchor = tk.NW, text = "Poder: ")
         self.power_entry = tk.Entry(self.canvas, width = 4, validate = "key", validatecommand = vcmd)
@@ -187,21 +200,42 @@ class CreateCardUI:
         self.courage_entry.place(x = posX + 320, y = posY + 140)
 
     def nameCharCount(self, event):
+        """
+        nameCharCount limits the amount of characters for the name entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.name_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def varCharCount(self, event):
+        """
+        varCharCount limits the amount of characters for the variant name entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.var_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
 
     def descCharCount(self, event):
+        """
+        descCharCount limits the amount of characters for description text.
+
+        :event: event that triggers the check.
+        """
         count = len(self.desc_text.get('1.0', 'end-1c'))
         if count >= 1000 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
 
     def checkNum(self, P):
+        """
+        checkNum limits the characters for entries that only need three digit natural numbers.
+
+        :P: string to check.
+        :return: True if the string is valid, False otherwise.
+        """
         if P == "":
             return True
         elif len(P) <= 3:
@@ -213,6 +247,12 @@ class CreateCardUI:
             return False
                 
     def checkStatNum(self, P):
+        """
+        checkStatNum limits the characters for entries that only need three digit real numbers.
+
+        :P: string to check.
+        :return: True if the string is valid, False otherwise.
+        """
         if P == "":
             return True
         elif len(P) == 1:
@@ -229,6 +269,11 @@ class CreateCardUI:
             return False
         
     def getStats(self):
+        """
+        getStats gets all stat entries inputs and adds them to a list.
+
+        :return: list with all the stat strings.
+        """
         stats_strs = []
         stats_strs.append(self.power_entry.get())
         stats_strs.append(self.speed_entry.get())
@@ -259,6 +304,12 @@ class CreateCardUI:
         return stats_strs
 
     def getImage(self):
+        """
+        getImage asks to pick a file and checks if its an image, checking if it has the desired
+        size, if its a valid image, it shows it in the system and saves its path and name.
+
+        :return: list with all the stat strings.
+        """
         self.path = filedialog.askopenfilename()
         isImage = self.img_handler.checkImage(self.path)
         match isImage:
@@ -277,6 +328,9 @@ class CreateCardUI:
                 messagebox.showinfo("Éxito", "Imagen cargada")          
 
     def clearEntries(self):
+        """
+        clearEntries clears all text in the entries and sets the selected image to its default value.
+        """
         self.name_entry.delete(0, tk.END)
         self.var_entry.delete(0, tk.END)
         self.desc_text.delete('1.0', 'end-1c')
@@ -316,24 +370,29 @@ class CreateCardUI:
 
 
     def createCard(self):
-        name = self.name_entry.get()
-        desc = self.desc_text.get('1.0', 'end-1c')
-        var = self.var_entry.get()
-        race = self.race_combo.get()
-        rarity = self.rarity_combo.get()
-        image = self.image_name
-        turn_power_str = self.turn_power_entry.get()
-        bonus_power_str = self.bonus_power_entry.get()
+        """
+        createCard gets the info introduced in every entry and the selected image, and tries to create
+        a Card, then shows a message depending on the result.
+        """
+        card_info = []
+        card_info.append(self.name_entry.get())
+        card_info.append(self.desc_text.get('1.0', 'end-1c'))
+        card_info.append(self.var_entry.get())
+        card_info.append(self.race_combo.get())
+        card_info.append(self.rarity_combo.get())
+        card_info.append(self.image_name)
+        card_info.append(self.turn_power_entry.get())
+        card_info.append(self.bonus_power_entry.get())
         stats_strs = self.getStats()
 
-        result = self.album.add(name, desc, var, race, rarity, image, turn_power_str, bonus_power_str, stats_strs)
+        result = self.album.add(card_info, stats_strs)
         match result:
             case 0:
-                messagebox.showinfo("Éxito", f"Carta {name}, {var} agregada")
+                messagebox.showinfo("Éxito", f"Carta {card_info[0]}, {card_info[2]} agregada")
                 self.var_check.state(["!selected"])
                 self.img_handler.saveImage(self.path)
             case 1:
-                messagebox.showinfo("Éxito", f"Variante {name}, {var} agregada")
+                messagebox.showinfo("Éxito", f"Variante {card_info[0]}, {card_info[2]} agregada")
                 self.var_check.state(["selected"])
                 self.img_handler.saveImage(self.path)
             case -1:
@@ -341,7 +400,7 @@ class CreateCardUI:
             case -2:
                 messagebox.showerror("Error", "El nombre de variante de la carta debe tener entre 5 y 30 caracteres")
             case -3:
-                messagebox.showerror("Error", f"La variante {var} de la carta {name} ya existe")
+                messagebox.showerror("Error", f"La variante {card_info[2]} de la carta {card_info[0]} ya existe")
             case -4:
                 messagebox.showerror("Error", "Seleccione una imagen para la carta")
             case -5:
@@ -462,8 +521,14 @@ class CreateCardUI:
                 messagebox.showerror("Error", "El valor de Valentía debe estar entre -100 y 100")
 
     def run(self):
+        """
+        run runs the main loop of the UI.
+        """
         self.window.mainloop()
 
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()

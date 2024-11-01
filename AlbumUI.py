@@ -12,6 +12,14 @@ class AlbumUI:
     main_cards = []
 
     def __init__(self, window, caller, cards):
+        """
+        Constructor that intializes and places the widgets of the UI, saves the received list of cards on a list
+        and creates a second list with only the main cards.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :cards: list of cards to show.
+        """
         self.caller = caller
         self.window = window
         self.canvas = tk.Canvas(self.window, width = 800, height = 600, bg = "#78a090")
@@ -83,10 +91,11 @@ class AlbumUI:
         self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
         self.back_button.place(x = 740, y = 570)
 
-    def run(self):
-        self.window.mainloop()
-
     def showSelection(self):
+        """
+        showSelection gets the selected item in the listbox and shows in the corresponding widgets
+        the info of the card that was requested.
+        """
         self.selected_card = self.listbox.curselection()[0]
 
         if not self.filtering:
@@ -146,6 +155,10 @@ class AlbumUI:
         self.canvas.itemconfig("card_img", image = self.selected_img)
 
     def showMain(self):
+        """
+        showMain checks if there are any cards, if so clears the listbox and adds all the main cards 
+        in the corresponding list.
+        """
         if len(self.main_cards) > 0:
             self.listbox.delete(0, tk.END)
             self.filtering = True
@@ -159,6 +172,9 @@ class AlbumUI:
             messagebox.showerror("Error", "No existen cartas para filtrar")
 
     def showAll(self):
+        """
+        showAll clears the listbox and adds all the cards in the list.
+        """
         self.listbox.delete(0, tk.END)
         self.filtering = False
         for i in self.cards:
@@ -167,7 +183,16 @@ class AlbumUI:
         self.listbox.selection_set(0)
         self.show_all_button.config(state = tk.DISABLED)
         self.filter_main_button.config(state = tk.NORMAL)
-
+    
+    def run(self):
+        """
+        run runs the main loop of the UI.
+        """
+        self.window.mainloop()
+    
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()

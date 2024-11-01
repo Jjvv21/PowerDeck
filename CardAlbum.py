@@ -7,20 +7,43 @@ class CardAlbum:
     save_file = "gamedata\cards.txt"
 
     def __init__(self):
+        """
+        Constructor that intializes the card album by opening the file and trying to add the cards in the
+        file to its list.
+        """
         file = open(self.save_file, "rb")
         try:
             self.cards.extend(pickle.load(file))
-            file.close()
         except:
             print("no cards found")
+        finally:
             file.close()
 
     def save(self):
+        """
+        save saves the cards in the album list to the file.
+        """
         file = open(self.save_file, "wb")
         pickle.dump(self.cards, file)
         file.close()
 
-    def add(self, name, desc, var, race, rarity, image, turn_power_str, bonus_power_str, stats_strs):
+    def add(self, card_info, stats_strs):
+        """
+        add receives two lists with the card info and card stats, checks if the values are valid,
+        returning with a diferent number when it finds an error, if all data is acceptable creates 
+        the new card and adds it to the list, which is sorted and saved.
+
+        :return: Number corresponding to the result of the creation.
+        """
+        name = card_info[0]
+        desc = card_info[1]
+        var = card_info[2]
+        race = card_info[3]
+        rarity = card_info[4]
+        image = card_info[5]
+        turn_power_str = card_info[6]
+        bonus_power_str = card_info[7]
+        
         if len(name) < 5:
             return -1
         
@@ -28,11 +51,9 @@ class CardAlbum:
             return -2
         
         nameID = ""
-        isVar = False
         if len(self.cards) > 0:
             for i in self.cards:
                 if i.getName() == name:
-                    isVar = True
                     nameID = i.getID()[0: 14]
                     if i.getVariantName() == var:
                         return -3
@@ -73,16 +94,28 @@ class CardAlbum:
         if len(stats) < 26:
             return -11 - i
         
-        newCard = Card(name, desc, var, not isVar, race, rarity, image, turn_power, bonus_power, nameID)
+        newCard = Card(nameID)
+        newCard.setName(name)
+        newCard.setDescription(desc)
+        newCard.setVariantName(var)
+        newCard.setRace(race)
+        newCard.setRarity(rarity)
+        newCard.setImage(image)
+        newCard.setTurnPower(turn_power)
+        newCard.setBonusPower(bonus_power)
         newCard.setStats(stats)
         self.cards.append(newCard)
         self.sort()
-        if not isVar:
+        if name == "":
             return 0
         else:
             return 1
 
     def sort(self):
+        """
+        sorts adds all cards names in lowercase in a list to use python's sort, then checks the name of the cards
+        to place them in the order obtained with the sort and updates the album list.
+        """
         order = []
         for i in self.cards:
             name = i.getName().lower()

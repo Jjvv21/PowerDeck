@@ -5,6 +5,14 @@ from AddDeckUI import *
 class MainUI:
 
     def __init__(self, window, caller, player_manager, player):
+        """
+        Constructor that intializes and places the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :player_manager: manager for the players accounts info.
+        :player: player that is currently logged in.
+        """
         self.caller = caller
         self.player_manager = player_manager
         self.player = player
@@ -25,6 +33,9 @@ class MainUI:
         self.back_button.place(x = 420, y = 470)
 
     def toDeckCreation(self):
+        """
+        toDeckCreation hides this UI and proceeds to the Deck Creation UI.
+        """
         self.window.withdraw()
         deck_creation_window = tk.Toplevel()
         deck_creation_window.title("Creación de Decks")
@@ -33,8 +44,14 @@ class MainUI:
         deck_creation_ui.run()
 
     def run(self):
+        """
+        run runs the main loop of the UI.
+        """
         self.window.mainloop()
 
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()

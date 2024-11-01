@@ -8,6 +8,14 @@ class AddDeckUI:
     decks = []
 
     def __init__(self, window, caller, player_manager, player):
+        """
+        Constructor that intializes and places the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :player_manager: manager for the players accounts info.
+        :player: player that is currently logged in.
+        """
         self.caller = caller
         self.player_manager = player_manager
         self.player = player
@@ -51,11 +59,21 @@ class AddDeckUI:
         self.back_button.place(x = 740, y = 570)
 
     def nameCharCount(self, event):
+        """
+        nameCharCount limits the amount of characters for the name entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.name_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def createDeck(self):
+        """
+        createDeck gets the name from the entry, checks if the name has the mininum length, checks if
+        the required number of selections was made in the listbox and adds the corresponding cards to
+        a list, then it tries to have the deck_builder create the deck for the player, reporting the result.
+        """
         name = self.name_entry.get()
         if len(name) < 5:
             messagebox.showerror("Error", f"Introduzca un nombre para el deck entre 5 y 30 caracteres")
@@ -101,6 +119,10 @@ class AddDeckUI:
                 return
             
     def updateDecks(self):
+        """
+        updateDeck gets the decks from the player that is logged in, adds them to a list and shows their
+        names in the corresponding listbox.
+        """
         self.decks = self.player.showDecks()
         self.decks_listbox.delete(0, tk.END)
         if len(self.decks) > 0:
@@ -110,6 +132,10 @@ class AddDeckUI:
             self.decks_listbox.selection_set(0)
 
     def showDeck(self):
+        """
+        showDeck checks if the player that is logged in has any decks, if so shows info about
+        the selected deck in the listbox.
+        """
         if len(self.decks) > 0:
             selection = self.decks_listbox.curselection()[0]
             deck = self.decks[selection]
@@ -126,10 +152,18 @@ class AddDeckUI:
                 cards_str += ", "
                 cards_str += i.getVariantName()
             messagebox.showinfo("Deck", f"{deck.getName()}:\n \n" + cards_str + f"\n \nFecha de creación: {deck.getCreationDate()}\n" + valid)
+        else:
+            messagebox.showerror("Error", "No existen decks para mostrar")
 
     def run(self):
+        """
+        run runs the main loop of the UI.
+        """
         self.window.mainloop()
 
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()

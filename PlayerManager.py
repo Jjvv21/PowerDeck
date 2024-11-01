@@ -10,20 +10,33 @@ class PlayerManager:
     album = CardAlbum()
 
     def __init__(self):
+        """
+        Constructor that intializes the player manager by opening the file and trying to add the players in the
+        file to its list.
+        """
         file = open(self.save_file, "rb")
         try:
             self.players.extend(pickle.load(file))
-            file.close()
         except:
             print("no player accounts found")
+        finally:
             file.close()
 
     def save(self):
+        """
+        save saves the player list in the file.
+        """
         file = open(self.save_file, "wb")
         pickle.dump(self.players, file)
         file.close()
 
     def add(self, name, username, password, mail, country, image):
+        """
+        add receives a list with the player info, checks if the values are valid, returning with
+        a diferent negative number when it finds an error, if all data is acceptable creates.
+
+        :return: Negative number corresponding to an error, index of the created player otherwise.
+        """
         if len(name) < 5:
             return -1
         
@@ -61,6 +74,13 @@ class PlayerManager:
         return len(self.players) - 1
     
     def checkPassword(self, password):
+        """
+        checkPassword receives a string with a password, checks every character in the password
+        to verify that theres is at least one alphabetic character and one numeric character 
+        the new player and adds it to the list, then returns the index for the created player.
+
+        :return: True if there are both alphabetic and numeric charaters, False otherwise.
+        """
         alpha = False
         num = False
         for char in password:

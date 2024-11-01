@@ -38,6 +38,13 @@ class RegisterUI:
     img_handler = ImageHandler()
 
     def __init__(self, window, caller, player_manager):
+        """
+        Constructor that intializes and places the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :player_manager: manager for the players accounts info.
+        """
         self.caller = caller
         self.player_manager = player_manager
         self.window = window
@@ -86,16 +93,32 @@ class RegisterUI:
         self.back_button.place(x = 490, y = 330)
 
     def nameCharCount(self, event):
+        """
+        nameCharCount limits the amount of characters for the name entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.name_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def usernameCharCount(self, event):
+        """
+        usernameCharCount limits the amount of characters for the username entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.username_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def checkPassword(self, P):
+        """
+        checkPassword limits the characters to alphanumeric, which are the only ones usable for passwords.
+
+        :P: string to check.
+        :return: True if the string is valid, False otherwise.
+        """
         if P == "":
             return True
         elif len(P) <= 8:
@@ -107,6 +130,12 @@ class RegisterUI:
             return False
         
     def getImage(self):
+        """
+        getImage asks to pick a file and checks if its an image, checking if it has the desired
+        size, if its a valid image, it shows it in the system and saves its path and name.
+
+        :return: list with all the stat strings.
+        """
         self.path = filedialog.askopenfilename()
         isImage = self.img_handler.checkImage(self.path)
         match isImage:
@@ -121,10 +150,14 @@ class RegisterUI:
             case _:
                 self.selected_img = self.img_handler.loadExternalImage(self.path)
                 self.canvas.itemconfig("selection", image = self.selected_img)
-                self.image_name = self.path[-isImage]
+                self.image_name = self.path[-isImage:]
                 messagebox.showinfo("Éxito", "Imagen cargada")
 
     def createPlayer(self):
+        """
+        createPlayer gets the information from the entries, checks if the two passwords are the same
+        and if so, tries to have the player_manager create the player with the info, notifying the result.
+        """
         name = self.name_entry.get()
         username = self.username_entry.get()
 
@@ -170,8 +203,14 @@ class RegisterUI:
                 self.back()
         
     def run(self):
+        """
+        run runs the main loop of the UI.
+        """
         self.window.mainloop()
 
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()
