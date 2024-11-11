@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 
-from ImageHandler import *
+from commons.ImageHandler import *
 
 class RegisterUI:
     countries = ['Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda',

@@ -1,6 +1,6 @@
-from CardAlbum import *
-from CreateCardUI import *
-from AlbumUI import *
+from logic.CardAlbum import *
+from UI.CreateCardUI import *
+from UI.AlbumUI import *
 
 class AdminUI:
     album = CardAlbum()

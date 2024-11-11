@@ -1,8 +1,8 @@
 import pickle, random
 
-from Player import *
-from CardAlbum import *
-from DeckBuilder import *
+from logic.Player import *
+from logic.CardAlbum import *
+from logic.DeckBuilder import *
 
 class PlayerManager:
     players = []

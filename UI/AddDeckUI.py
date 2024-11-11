@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from DeckBuilder import *
+from logic.DeckBuilder import *
 class AddDeckUI:
     deck_builder = DeckBuilder()
     cards = []

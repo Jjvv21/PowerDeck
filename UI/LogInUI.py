@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from PlayerManager import *
-from RegisterUI import *
-from MainUI import *
+from logic.PlayerManager import *
+from UI.RegisterUI import *
+from UI.MainUI import *
 
 class LogInUI:
     player_manager = PlayerManager()

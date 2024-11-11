@@ -1,7 +1,7 @@
-from Deck import *
+from logic.Deck import *
 
 class DeckBuilder:
-    max_cards = 15
+    max_cards = 10
     max_urs = round(max_cards*0.1)
     max_mrs = round(max_cards*0.15)
     max_rs = round(max_cards*0.2)

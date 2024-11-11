@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
-from ImageHandler import *
+from commons.ImageHandler import *
 
 class CreateCardUI:
     image_name = "noImage.jpg"

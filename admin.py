@@ -1,4 +1,4 @@
-from AdminUI import *
+from UI.AdminUI import *
 
 def main():
     root = tk.Tk()

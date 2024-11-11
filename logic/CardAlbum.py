@@ -1,6 +1,6 @@
 import pickle
 
-from Card import *
+from logic.Card import *
 
 class CardAlbum:
     cards = []

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from ImageHandler import *
+from commons.ImageHandler import *
 
 class AlbumUI:
     selected_card = 0
