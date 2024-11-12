@@ -1,31 +1,20 @@
-import pickle
+from logic.Manager import *
 
 from logic.Card import *
 
-class CardAlbum:
-    cards = []
-    save_file = "gamedata\cards.txt"
+class CardAlbum(Manager):
 
     def __init__(self):
         """
         Constructor that intializes the card album by opening the file and trying to add the cards in the
         file to its list.
         """
-        file = open(self.save_file, "rb")
-        try:
-            self.cards.extend(pickle.load(file))
-        except:
-            print("no cards found")
-        finally:
-            file.close()
-
-    def save(self):
-        """
-        save saves the cards in the album list to the file.
-        """
-        file = open(self.save_file, "wb")
-        pickle.dump(self.cards, file)
-        file.close()
+        Manager.__init__(self, "gamedata\cards.txt")
+        with open(self.getSaveFile(), "rb") as file:
+            try:
+                self.setData(pickle.load(file))
+            except:
+                print("no cards found")
 
     def add(self, card_info, stats_strs):
         """
@@ -54,7 +43,7 @@ class CardAlbum:
         
         nameID = ""
         if len(self.cards) > 0:
-            for i in self.cards:
+            for i in self.data:
                 if i.getName() == name:
                     nameID = i.getID()[0: 14]
                     if i.getVariantName() == var:
@@ -106,21 +95,25 @@ class CardAlbum:
         newCard.setTurnPower(turn_power)
         newCard.setBonusPower(bonus_power)
         newCard.setStats(stats)
-        self.cards.append(newCard)
-        self.sort()
-        if name == "":
+        self.addData(newCard)
+        self.setData(self.sort(self.getData()))
+        self.save()
+        if nameID == "":
             return 0
         else:
             return 1
 
-    def sort(self):
+    def sort(self, cards):
         """
         sorts adds all cards names in lowercase to a list to use python's sort, 
         then checks the name of the cards to place them in the order obtained with 
         the sort and updates the album list.
+
+        :cards: list with the cards to sorted.        
+        :return: list with the sorted cards.
         """
         order = []
-        for i in self.cards:
+        for i in cards:
             name = i.getName().lower()
             var = i.getVariantName().lower()
             order.append(name + var)
@@ -134,9 +127,8 @@ class CardAlbum:
                 if (name + var) == order[j]:
                     sorted_cards.append(k)
 
-        self.cards = sorted_cards
-        self.save()
+        return sorted_cards
 
     def getCards(self):
-        return self.cards
+        return self.getData()
         

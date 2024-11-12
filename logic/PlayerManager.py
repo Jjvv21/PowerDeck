@@ -1,12 +1,11 @@
-import pickle, random
+import random
 
+from logic.UserManager import *
 from logic.Player import *
 from logic.CardAlbum import *
 from logic.DeckBuilder import *
 
-class PlayerManager:
-    players = []
-    save_file = "gamedata\player_accounts.txt"
+class PlayerManager(UserManager):
     album = CardAlbum()
 
     def __init__(self):
@@ -14,23 +13,14 @@ class PlayerManager:
         Constructor that intializes the player manager by opening the file and trying to add the players in the
         file to its list.
         """
-        file = open(self.save_file, "rb")
-        try:
-            self.players.extend(pickle.load(file))
-        except:
-            print("no player accounts found")
-        finally:
-            file.close()
+        UserManager.__init__(self, "gamedata\player_accounts.txt")
+        with open(self.getSaveFile(), "rb") as file:
+            try:
+                self.setData(pickle.load(file))
+            except:
+                print("no player accounts found")
 
-    def save(self):
-        """
-        save saves the player list in the file.
-        """
-        file = open(self.save_file, "wb")
-        pickle.dump(self.players, file)
-        file.close()
-
-    def add(self, player_info):
+    def add(self, player_info, admin_manager):
         """
         add receives a list with the player info, checks if the values are valid, returning with
         a diferent negative number when it finds an error, if all data is acceptable creates.
@@ -53,11 +43,18 @@ class PlayerManager:
         if mail == "":
             return -3
         
-        if len(self.players) > 0:
-            for i in self.players:
+        players = self.getData()
+        if len(players) > 0:
+            for i in players:
                 if i.getUser() == username:
                     return -4
                 if i.getMail() == mail:
+                    return -5
+                
+        admins = admin_manager.getData()
+        if len(admins) > 0:
+            for j in admins:
+                if j.getMail() == mail:
                     return -5
         
         if len(password) < 6:
@@ -77,28 +74,8 @@ class PlayerManager:
         newPlayer.setCountry(country)
         newPlayer.setAvatar(image)
         self.startingCards(newPlayer)
-        self.players.append(newPlayer)
-        return len(self.players) - 1
-    
-    def checkPassword(self, password):
-        """
-        checkPassword checks every character in a password to verify that theres is at least 
-        one alphabetic character and one numeric character the new player and adds it to the list,
-        then returns the index for the created player.
-        
-        :password: string with the password to check.
-        :return: True if there are both alphabetic and numeric charaters, False otherwise.
-        """
-        alpha = False
-        num = False
-        for char in password:
-            if str.isalpha(char):
-                alpha = True
-            elif str.isnumeric(char):
-                num = True
-            if alpha and num:
-                break
-        return alpha and num
+        self.addData(newPlayer)
+        return len(players)
     
     def startingCards(self, player):
         """
@@ -166,20 +143,7 @@ class PlayerManager:
                     bs += 1
 
         for j in cards_to_give:
-            player.receiveCard(j)
-    
-    def exists(self, mail):
-        """
-        exists checks if a given mail corresponds to any mail
-        in the saved players.
-
-        :mail: string with the mail to search.
-        :return: -1 if the mail is not found, index for the location of the player otherwise.
-        """
-        for i in range(0, len(self.players)):
-            if self.players[i].getMail() == mail:
-                return i
-        return -1
+            player.receiveCard(j, self.album)
 
     def getPlayer(self, index):
         """
@@ -189,5 +153,6 @@ class PlayerManager:
         :index: index where the desired player is.
         :return: player at the given index.
         """
-        return self.players[index]
+        players = self.getData()
+        return players[index]
         

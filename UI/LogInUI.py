@@ -2,11 +2,14 @@ import tkinter as tk
 from tkinter import messagebox
 
 from logic.PlayerManager import *
+from logic.AdminManager import *
 from UI.RegisterUI import *
 from UI.MainUI import *
+from UI.AdminUI import *
 
 class LogInUI:
     player_manager = PlayerManager()
+    admin_manager = AdminManager()
 
     def __init__(self, window):
         """
@@ -47,22 +50,33 @@ class LogInUI:
             return
         
         player_index = self.player_manager.exists(mail)
-        if player_index < 0:
+        admin_index = self.admin_manager.exists(mail)
+            
+        if admin_index >= 0:
+            user = self.admin_manager.getAdmin(admin_index)
+            user_type = "admin"
+        elif player_index >= 0:
+            user = self.player_manager.getPlayer(player_index)
+            user_type = "player"
+        else:
             messagebox.showerror("Error", f"No existe una cuenta con el correo {mail}")
             return
-        player = self.player_manager.getPlayer(player_index)
         
         if password == "":
             messagebox.showerror("Error", "Introduzca la contraseña")
             return
         
-        if not player.getPassword() == password:
+        if not user.getPassword() == password:
             messagebox.showerror("Error", "Contraseña Incorrecta")
             return
         
         self.mail_entry.delete(0, tk.END)
         self.password_entry.delete(0, tk.END)
-        self.toMainUI(player)
+        match user_type:
+            case "player":
+                self.toMainUI(user)
+            case "admin":
+                self.toAdminUI(user)
     
     def toMainUI(self, player):
         """
@@ -75,6 +89,17 @@ class LogInUI:
         main_ui = MainUI(main_window, self, self.player_manager, player)
         main_ui.run()
 
+    def toAdminUI(self, admin):
+        """
+        toAdminUI hides this UI and proceeds to the Admin UI.
+        """
+        self.window.withdraw()
+        admin_window = tk.Toplevel()
+        admin_window.title("Administración")
+        admin_window.resizable(width = tk.NO, height = tk.NO)
+        admin_ui = AdminUI(admin_window, self, admin, self.admin_manager, self.player_manager)
+        admin_ui.run()
+
     def toRegisterUI(self):
         """
         toRegisterUI hides this UI and proceeds to the Register UI.
@@ -86,7 +111,7 @@ class LogInUI:
         register_window = tk.Toplevel()
         register_window.title("Registro")
         register_window.resizable(width = tk.NO, height = tk.NO)
-        register_ui = RegisterUI(register_window, self, self.player_manager)
+        register_ui = RegisterUI(register_window, self, self.player_manager, self.admin_manager)
         register_ui.run()
 
     def run(self):
