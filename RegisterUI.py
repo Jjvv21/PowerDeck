@@ -38,10 +38,17 @@ class RegisterUI:
     img_handler = ImageHandler()
 
     def __init__(self, window, caller, player_manager):
+        """
+        Constructor that intializes and places the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        :caller: UI that called this one.
+        :player_manager: manager for the players accounts info.
+        """
         self.caller = caller
         self.player_manager = player_manager
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 550, height = 400, bg = "#78a090")
+        self.canvas = tk.Canvas(self.window, width = 550, height = 450, bg = "#78a090")
         self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
@@ -80,22 +87,38 @@ class RegisterUI:
         self.select_img_button.place(x = 300, y = 50)
 
         self.back_button = tk.Button(self.canvas, text = "Registrar", command = self.createPlayer)
-        self.back_button.place(x = 40, y = 350)
+        self.back_button.place(x = 50, y = 320)
 
         self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 490, y = 370)
+        self.back_button.place(x = 490, y = 330)
 
     def nameCharCount(self, event):
+        """
+        nameCharCount limits the amount of characters for the name entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.name_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def usernameCharCount(self, event):
+        """
+        usernameCharCount limits the amount of characters for the username entry.
+
+        :event: event that triggers the check.
+        """
         count = len(self.username_entry.get())
         if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
             return 'break'
         
     def checkPassword(self, P):
+        """
+        checkPassword limits the characters to alphanumeric, which are the only ones usable for passwords.
+
+        :P: string to check.
+        :return: True if the string is valid, False otherwise.
+        """
         if P == "":
             return True
         elif len(P) <= 8:
@@ -107,6 +130,12 @@ class RegisterUI:
             return False
         
     def getImage(self):
+        """
+        getImage asks to pick a file and checks if its an image, checking if it has the desired
+        size, if its a valid image, it shows it in the system and saves its path and name.
+
+        :return: list with all the stat strings.
+        """
         self.path = filedialog.askopenfilename()
         isImage = self.img_handler.checkImage(self.path)
         match isImage:
@@ -121,24 +150,29 @@ class RegisterUI:
             case _:
                 self.selected_img = self.img_handler.loadExternalImage(self.path)
                 self.canvas.itemconfig("selection", image = self.selected_img)
-                self.image_name = self.path[-isImage]
+                self.image_name = self.path[-isImage:]
                 messagebox.showinfo("Éxito", "Imagen cargada")
 
     def createPlayer(self):
-        name = self.name_entry.get()
-        username = self.username_entry.get()
+        """
+        createPlayer gets the information from the entries, checks if the two passwords are the same
+        and if so, tries to have the player_manager create the player with the info, notifying the result.
+        """
+        player_info = []
+        player_info.append(self.name_entry.get())
+        player_info.append(self.username_entry.get())
 
-        password = self.password_entry.get()
+        player_info.append(self.password_entry.get())
         password_confirmation = self.confirm_password_entry.get()
-        if password != password_confirmation:
+        if player_info[2] != password_confirmation:
             messagebox.showerror("Error", "Las contraseñas no coinciden")
             return
         
-        mail = self.mail_entry.get()
-        country = self.country_combo.get()
-        image = self.image_name
+        player_info.append(self.mail_entry.get())
+        player_info.append(self.country_combo.get())
+        player_info.append(self.image_name)
 
-        result = self.player_manager.add(name, username, password, mail, country, image)
+        result = self.player_manager.add(player_info)
         match result:
             case -1:
                 messagebox.showerror("Error", "El nombre debe tener entre 5 y 30 caracteres")
@@ -165,13 +199,19 @@ class RegisterUI:
                     received_cards_str += i.getName()
                     received_cards_str += ", "
                     received_cards_str += i.getVariantName()
-                messagebox.showinfo("Éxito", f"Jugador {username} creado \n" + received_cards_str)
+                messagebox.showinfo("Éxito", f"Jugador {player_info[1]} creado \n \n" + received_cards_str)
                 self.player_manager.save()
                 self.back()
         
     def run(self):
+        """
+        run runs the main loop of the UI.
+        """
         self.window.mainloop()
 
     def back(self):
+        """
+        back returns to the UI that called this one.
+        """
         self.window.destroy()
         self.caller.window.deiconify()

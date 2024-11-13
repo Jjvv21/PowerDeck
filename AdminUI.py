@@ -6,31 +6,45 @@ class AdminUI:
     album = CardAlbum()
 
     def __init__(self, window):
+        """
+        Constructor that intializes and places the widgets of the UI.
+
+        :window: Toplevel container for the widgets.
+        """
         self.window = window
         self.canvas = tk.Canvas(self.window, width = 250, height = 150, bg = "#78a090")
         self.canvas.pack()
 
-        self.to_add_button = tk.Button(self.canvas, text = "Agregar Carta", command = self.openAdd)
+        self.to_add_button = tk.Button(self.canvas, text = "Agregar Carta", command = self.toCardCreation)
         self.to_add_button.place(x = 50, y = 70)
 
-        self.to_album_button = tk.Button(self.canvas, text = "Álbum", command = self.openAlbum)
-        self.to_album_button.place(x = 150, y = 70)
+        self.to_album_button = tk.Button(self.canvas, text = "Álbum", command = self.toAlbum)
+        self.to_album_button.place(x = 150, y = 70)    
 
-    def run(self):
-        self.window.mainloop()
-
-    def openAdd(self):
+    def toCardCreation(self):
+        """
+        toCradCreation hides this UI and proceeds to the Card Creation UI.
+        """
         self.window.withdraw()
-        window_add = tk.Toplevel()
-        window_add.title("Creación de Cartas")
-        window_add.resizable(width = tk.NO, height = tk.NO)
-        add = CreateCardUI(window_add, self, self.album)
+        create_card_window = tk.Toplevel()
+        create_card_window.title("Creación de Cartas")
+        create_card_window.resizable(width = tk.NO, height = tk.NO)
+        add = CreateCardUI(create_card_window, self, self.album)
         add.run()
 
-    def openAlbum(self):
+    def toAlbum(self):
+        """
+        toAlbum hides this UI and proceeds to the Card Album UI.
+        """
         self.window.withdraw()
-        window_album = tk.Toplevel()
-        window_album.title("Álbum de Cartas")
-        window_album.resizable(width = tk.NO, height = tk.NO)
-        album = AlbumUI(window_album, self, self.album.getCards())
+        album_window = tk.Toplevel()
+        album_window.title("Álbum de Cartas")
+        album_window.resizable(width = tk.NO, height = tk.NO)
+        album = AlbumUI(album_window, self, self.album.getCards())
         album.run()
+    
+    def run(self):
+        """
+        run runs the main loop of the UI.
+        """
+        self.window.mainloop()
