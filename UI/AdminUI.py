@@ -21,7 +21,7 @@ class AdminUI:
         self.canvas.pack()
 
         self.canvas.create_text(50, 5, anchor = tk.NW, text = f"Administración de {self.admin.getRole()}")
-        self.canvas.create_text(190, 25, anchor = tk.NW, text = f"Bienvenido {self.admin.getName()}")
+        self.canvas.create_text(40, 25, anchor = tk.NW, text = f"Bienvenido {self.admin.getName()}")
 
         match self.admin.getRole():
             case "Juego":
@@ -30,36 +30,36 @@ class AdminUI:
                 self.placeControlOptions()
 
         self.new_admin_button = tk.Button(self.canvas, text = "Crear Administrador", command = self.back)
-        self.new_admin_button.place(x = 30, y = 220)
+        self.new_admin_button.place(x = 10, y = 220)
 
         self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
-        self.back_button.place(x = 370, y = 220)
+        self.back_button.place(x = 150, y = 220)
 
     def placeGameOptions(self):
         self.to_add_button = tk.Button(self.canvas, text = "Agregar Carta", command = self.toCardCreation)
-        self.to_add_button.place(x = 30, y = 70)
+        self.to_add_button.place(x = 10, y = 70)
 
         self.to_album_button = tk.Button(self.canvas, text = "Álbum", command = self.toAlbum)
         self.to_album_button.place(x = 130, y = 70)
 
         self.to_edit_button = tk.Button(self.canvas, text = "Editar Carta")
-        self.to_edit_button.place(x = 230, y = 70)
+        self.to_edit_button.place(x = 30, y = 100)
 
         self.to_shop_button = tk.Button(self.canvas, text = "Productos de Tienda")
-        self.to_shop_button.place(x = 30, y = 130)
+        self.to_shop_button.place(x = 10, y = 130)
 
         self.to_game_button = tk.Button(self.canvas, text = "Parámentros de Juego")
-        self.to_game_button.place(x = 130, y = 130)
+        self.to_game_button.place(x = 10, y = 160)
 
     def placeControlOptions(self):
         self.to_add_button = tk.Button(self.canvas, text = "Monitoreo")
-        self.to_add_button.place(x = 30, y = 70)
+        self.to_add_button.place(x = 10, y = 70)
 
         self.to_album_button = tk.Button(self.canvas, text = "Tienda")
         self.to_album_button.place(x = 130, y = 70)
 
         self.to_edit_button = tk.Button(self.canvas, text = "Transacciones de Venta")
-        self.to_edit_button.place(x = 230, y = 70)
+        self.to_edit_button.place(x = 30, y = 100)
 
     def toCardCreation(self):
         """

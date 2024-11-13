@@ -7,6 +7,7 @@ from logic.DeckBuilder import *
 
 class PlayerManager(UserManager):
     album = CardAlbum()
+    max_starting_cards = 20
 
     def __init__(self):
         """
@@ -107,42 +108,22 @@ class PlayerManager(UserManager):
                         Ns.append(i)
                     case "Básica":
                         Bs.append(i)
-        
-        deck_builder = DeckBuilder()
-        maxs = deck_builder.getMaxCards()
-        max_cards = maxs[0]
-        max_urs = maxs[1]
-        max_mrs = maxs[2]
-        max_rs = maxs[3]
-        max_ns = maxs[4]
-        max_bs = maxs[5]
 
-        cards_to_give = []
-        urs = 0
-        mrs = 0
-        rs = 0
-        ns = 0
-        bs = 0
-        while len(cards_to_give) < max_cards:
+        starting_cards = []
+        while len(starting_cards) < self.max_starting_cards:
             rng = random.randint(1, 100)
-            if rng <= 5 and urs < max_urs:
-                cards_to_give.append(URs.pop(0))
-                urs += 1
-            elif rng <= 17 and mrs < max_mrs:
-                cards_to_give.append(MRs.pop(0))
-                mrs += 1
-            elif rng <= 35 and rs < max_rs:
-                cards_to_give.append(Rs.pop(0))
-                rs += 1
-            elif rng <= 60 and ns < max_ns:
-                    cards_to_give.append(Ns.pop(0))
-                    ns += 1
+            if rng <= 5:
+                starting_cards.append(URs.pop(0))
+            elif rng <= 17:
+                starting_cards.append(MRs.pop(0))
+            elif rng <= 35:
+                starting_cards.append(Rs.pop(0))
+            elif rng <= 60:
+                starting_cards.append(Ns.pop(0))
             else:
-                if bs < max_bs:
-                    cards_to_give.append(Bs.pop(0))
-                    bs += 1
+                starting_cards.append(Bs.pop(0))
 
-        for j in cards_to_give:
+        for j in starting_cards:
             player.receiveCard(j, self.album)
 
     def getPlayer(self, index):
