@@ -71,7 +71,7 @@ class Card:
         return self.race
 
     def setRarity(self, rarity):
-        self.race = rarity
+        self.rarity = rarity
 
     def getRarity(self):
         return self.rarity

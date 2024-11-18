@@ -42,9 +42,10 @@ class CardAlbum(Manager):
         if len(var) < 5:
             return CardResult.VARIANT_NAME_LENGTH.value
         
+        cards = self.getData()
         nameID = ""
-        if len(self.cards) > 0:
-            for i in self.data:
+        if len(cards) > 0:
+            for i in cards:
                 if i.getName() == name:
                     nameID = i.getID()[0: 14]
                     if i.getVariantName() == var:
@@ -119,10 +120,10 @@ class CardAlbum(Manager):
             var = i.getVariantName().lower()
             order.append(name + var)
         order.sort()
-
+    	
         sorted_cards = []
         for j in range(0, len(order)):
-            for k in self.cards:
+            for k in cards:
                 name = k.getName().lower()
                 var = k.getVariantName().lower()
                 if (name + var) == order[j]:

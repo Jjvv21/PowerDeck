@@ -77,7 +77,7 @@ class PlayerManager(UserManager):
         newPlayer.setAvatar(image)
         self.startingCards(newPlayer)
         self.addData(newPlayer)
-        return len(players)
+        return len(players) - 1
     
     def startingCards(self, player):
         """
@@ -113,13 +113,13 @@ class PlayerManager(UserManager):
         starting_cards = []
         while len(starting_cards) < self.max_starting_cards:
             rng = random.randint(1, 100)
-            if rng <= 5:
+            if rng <= 5 and len(URs) > 0:
                 starting_cards.append(URs.pop(0))
-            elif rng <= 17:
+            elif rng <= 17 and len(MRs) > 0:
                 starting_cards.append(MRs.pop(0))
-            elif rng <= 35:
+            elif rng <= 35 and len(Rs) > 0:
                 starting_cards.append(Rs.pop(0))
-            elif rng <= 60:
+            elif rng <= 60 and len(Ns) > 0:
                 starting_cards.append(Ns.pop(0))
             else:
                 starting_cards.append(Bs.pop(0))
