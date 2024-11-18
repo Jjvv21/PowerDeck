@@ -39,8 +39,8 @@ class NewAdminUI:
         self.confirm_password_entry.place(x = 150, y = 110)
 
         self.canvas.create_text(10, 130, anchor = tk.NW, text = "Rol: ")
-        self.rol_combo = ttk.Combobox(self.canvas, state = "readonly",values = ["Juego", "Control"], width = 7)
-        self.rol_combo.place(x = 60, y = 150)
+        self.role_combo = ttk.Combobox(self.canvas, state = "readonly",values = ["Juego", "Control"], width = 7)
+        self.role_combo.place(x = 60, y = 150)
 
         self.back_button = tk.Button(self.canvas, text = "Crear", command = self.createAdmin)
         self.back_button.place(x = 50, y = 320)
@@ -90,7 +90,7 @@ class NewAdminUI:
             messagebox.showerror("Error", "Las contraseñas no coinciden")
             return
         
-        admin_info.append(self.rol_combo.get())
+        admin_info.append(self.role_combo.get())
 
         result = self.admin_manager.add(admin_info, self.player_manager)
         match result:
@@ -108,7 +108,7 @@ class NewAdminUI:
                 messagebox.showerror("Error", "Seleccione un rol")
             case _:
                 admin = self.admin_manager.getAdmin(result)
-                messagebox.showinfo("Éxito", f"Administrador de  {admin_info[1]} creado \n \n")
+                messagebox.showinfo("Éxito", f"Administrador de {admin_info[1]} creado \n \n")
                 self.admin_manager.save()
                 self.back()
         

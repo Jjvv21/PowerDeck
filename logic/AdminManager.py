@@ -25,8 +25,8 @@ class AdminManager(UserManager):
         :return: Negative number corresponding to an error, index of the created player otherwise.
         """
         name = admin_info[0]
-        password = admin_info[1]
-        mail = admin_info[2]
+        mail = admin_info[1]
+        password = admin_info[2]
         role = admin_info[3]
 
         if len(name) < 5:
@@ -62,7 +62,7 @@ class AdminManager(UserManager):
         newAdmin.setMail(mail)
         newAdmin.setRole(role)
         self.addData(newAdmin)
-        return len(admins)
+        return len(admins) - 1
     
     def getAdmin(self, index):
         """

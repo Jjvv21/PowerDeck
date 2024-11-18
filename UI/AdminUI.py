@@ -29,7 +29,7 @@ class AdminUI:
             case "Control":
                 self.placeControlOptions()
 
-        self.new_admin_button = tk.Button(self.canvas, text = "Crear Administrador", command = self.back)
+        self.new_admin_button = tk.Button(self.canvas, text = "Crear Administrador", command = self.toNewAdmin)
         self.new_admin_button.place(x = 10, y = 220)
 
         self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
