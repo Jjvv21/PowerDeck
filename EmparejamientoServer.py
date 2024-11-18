@@ -28,7 +28,7 @@ def handle_player_connection(player_socket):
     else:
         player_socket.sendall(b"Esperando un rival...")
         start_time = time.time()
-        while len(player_queue) == 1 and time.time() - start_time < 10:
+        while len(player_queue) == 1 and time.time() - start_time < 60:
             time.sleep(1)
 
         if len(player_queue) == 1:  # Si pasa más de 10 segundos, emparejar con bot

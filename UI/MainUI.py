@@ -1,8 +1,12 @@
 import tkinter as tk
+import time, threading
+from tkinter import messagebox
 
+from logic.EmparejamientoClient import *
 from UI.AddDeckUI import *
 
 class MainUI:
+    message = ""
 
     def __init__(self, window, caller, player_manager, player):
         """
@@ -23,14 +27,33 @@ class MainUI:
         self.canvas.create_text(200, 5, anchor = tk.NW, text = "PowerDeck")
         self.canvas.create_text(190, 25, anchor = tk.NW, text = f"Bienvenido {self.player.getUser()}")
 
-        self.play_button = tk.Button(self.canvas, text = "Jugar")
+        self.play_button = tk.Button(self.canvas, text = "Jugar", command = self.findGame)
         self.play_button.place(x = 100, y = 80)
+        self.canvas.create_text(150, 85, anchor = tk.NW, text = "", tags = "wait")
 
         self.deck_button = tk.Button(self.canvas, text = "Crear Deck", command = self.toDeckCreation)
         self.deck_button.place(x = 100, y = 110)
 
         self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
         self.back_button.place(x = 420, y = 470)
+
+    def findGame(self):
+        self.play_button.config(state = tk.DISABLED)
+        threading.Thread(target=self.looking).start()
+        threading.Thread(target=self.showWaitTime).start()
+
+    def looking(self):
+        self.message = connect()
+        self.play_button.config(state = tk.NORMAL)
+        messagebox.showinfo("Éxito", self.message)
+        self.message = ""
+
+    def showWaitTime(self):
+        start_time = time.time()
+        while (self.message == "") and (time.time() - start_time < 60):
+            wait = time.time() - start_time
+            self.canvas.itemconfig("wait", text = f"Tiempo de expera: {int(wait)}s")
+        self.canvas.itemconfig("wait", text = "")
 
     def toDeckCreation(self):
         """
