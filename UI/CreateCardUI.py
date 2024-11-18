@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
-from ImageHandler import *
+from commons.ImageHandler import *
 
 class CreateCardUI:
     image_name = "noImage.jpg"
@@ -408,117 +408,11 @@ class CreateCardUI:
             case -6:
                 messagebox.showerror("Error", "Seleccione una rareza para la carta")
             case -7:
-                messagebox.showerror("Error", "Ingrese un valor para el turno de poder")
+                messagebox.showerror("Error", "Ingrese un valor para el turno de poder entre 0 y 100")
             case -8:
-                messagebox.showerror("Error", "El valor de turno de poder debe estar entre 0 y 100")
+                messagebox.showerror("Error", "Ingrese un valor para el bonus de poder entre 0 y 100")
             case -9:
-                messagebox.showerror("Error", "Ingrese un valor para el bonus de poder")
-            case -10:
-                messagebox.showerror("Error", "El valor de bonus de poder debe estar entre 0 y 100")
-            case -11:
-                messagebox.showerror("Error", "Valor inválido para Poder")
-            case -12:
-                messagebox.showerror("Error", "Valor inválido para Velocidad")
-            case -13:
-                messagebox.showerror("Error", "Valor inválido para Magia")
-            case -14:
-                messagebox.showerror("Error", "Valor inválido para Defensa")
-            case -15:
-                messagebox.showerror("Error", "Valor inválido para Inteligencia")
-            case -16:
-                messagebox.showerror("Error", "Valor inválido para Altura")
-            case -17:
-                messagebox.showerror("Error", "Valor inválido para Fuerza")
-            case -18:
-                messagebox.showerror("Error", "Valor inválido para Agilidad")
-            case -19:
-                messagebox.showerror("Error", "Valor inválido para Salto")
-            case -20:
-                messagebox.showerror("Error", "Valor inválido para Resistencia")
-            case -21:
-                messagebox.showerror("Error", "Valor inválido para Flexibilidad")
-            case -22:
-                messagebox.showerror("Error", "Valor inválido para Explosividad")
-            case -23:
-                messagebox.showerror("Error", "Valor inválido para Carisma")
-            case -24:
-                messagebox.showerror("Error", "Valor inválido para Habilidad")
-            case -25:
-                messagebox.showerror("Error", "Valor inválido para Balance")
-            case -26:
-                messagebox.showerror("Error", "Valor inválido para Sabiduría")
-            case -27:
-                messagebox.showerror("Error", "Valor inválido para Suerte")
-            case -28:
-                messagebox.showerror("Error", "Valor inválido para Coordinación")
-            case -29:
-                messagebox.showerror("Error", "Valor inválido para Amabilidad")
-            case -30:
-                messagebox.showerror("Error", "Valor inválido para Lealtad")
-            case -31:
-                messagebox.showerror("Error", "Valor inválido para Disciplina")
-            case -32:
-                messagebox.showerror("Error", "Valor inválido para Liderazgo")
-            case -33:
-                messagebox.showerror("Error", "Valor inválido para Prudencia")
-            case -34:
-                messagebox.showerror("Error", "Valor inválido para Confianza")
-            case -35:
-                messagebox.showerror("Error", "Valor inválido para Percepción")
-            case -36:
-                messagebox.showerror("Error", "Valor inválido para Valentía")
-            case -37:
-                messagebox.showerror("Error", "El valor de Poder debe estar entre -100 y 100")
-            case -38:
-                messagebox.showerror("Error", "El valor de Velocidad debe estar entre -100 y 100")
-            case -39:
-                messagebox.showerror("Error", "El valor de Magia debe estar entre -100 y 100")
-            case -40:
-                messagebox.showerror("Error", "El valor de Defensa debe estar entre -100 y 100")
-            case -41:
-                messagebox.showerror("Error", "El valor de Inteligencia debe estar entre -100 y 100")
-            case -42:
-                messagebox.showerror("Error", "El valor de Altura debe estar entre -100 y 100")
-            case -43:
-                messagebox.showerror("Error", "El valor de Fuerza debe estar entre -100 y 100")
-            case -44:
-                messagebox.showerror("Error", "El valor de Agilidad debe estar entre -100 y 100")
-            case -45:
-                messagebox.showerror("Error", "El valor de Salto debe estar entre -100 y 100")
-            case -46:
-                messagebox.showerror("Error", "El valor de Resistencia debe estar entre -100 y 100")
-            case -47:
-                messagebox.showerror("Error", "El valor de Flexibilidad debe estar entre -100 y 100")
-            case -48:
-                messagebox.showerror("Error", "El valor de Explosividad debe estar entre -100 y 100")
-            case -49:
-                messagebox.showerror("Error", "El valor de Carisma debe estar entre -100 y 100")
-            case -50:
-                messagebox.showerror("Error", "El valor de Habilidad debe estar entre -100 y 100")
-            case -51:
-                messagebox.showerror("Error", "El valor de Balance debe estar entre -100 y 100")
-            case -52:
-                messagebox.showerror("Error", "El valor de Sabiduría debe estar entre -100 y 100")
-            case -53:
-                messagebox.showerror("Error", "El valor de Suerte debe estar entre -100 y 100")
-            case -54:
-                messagebox.showerror("Error", "El valor de Coordinación debe estar entre -100 y 100")
-            case -55:
-                messagebox.showerror("Error", "El valor de Amabilidad debe estar entre -100 y 100")
-            case -56:
-                messagebox.showerror("Error", "El valor de Lealtad debe estar entre -100 y 100")
-            case -57:
-                messagebox.showerror("Error", "El valor de Disciplina debe estar entre -100 y 100")
-            case -58:
-                messagebox.showerror("Error", "El valor de Liderazgo debe estar entre -100 y 100")
-            case -59:
-                messagebox.showerror("Error", "El valor de Prudencia debe estar entre -100 y 100")
-            case -60:
-                messagebox.showerror("Error", "El valor de Confianza debe estar entre -100 y 100")
-            case -61:
-                messagebox.showerror("Error", "El valor de Percepción debe estar entre -100 y 100")
-            case -62:
-                messagebox.showerror("Error", "El valor de Valentía debe estar entre -100 y 100")
+                messagebox.showerror("Error", "Valor inválido en atributos, deben ser números entre -100 y 100")
 
     def run(self):
         """

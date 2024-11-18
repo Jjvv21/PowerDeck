@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 
-from ImageHandler import *
+from commons.ImageHandler import *
 
 class RegisterUI:
     countries = ['Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda',
@@ -37,7 +37,7 @@ class RegisterUI:
     path = ""
     img_handler = ImageHandler()
 
-    def __init__(self, window, caller, player_manager):
+    def __init__(self, window, caller, player_manager, admin_manager):
         """
         Constructor that intializes and places the widgets of the UI.
 
@@ -47,6 +47,7 @@ class RegisterUI:
         """
         self.caller = caller
         self.player_manager = player_manager
+        self.admin_manager = admin_manager
         self.window = window
         self.canvas = tk.Canvas(self.window, width = 550, height = 450, bg = "#78a090")
         self.canvas.pack()
@@ -65,11 +66,11 @@ class RegisterUI:
 
         vcmd = (self.window.register(self.checkPassword), '%P')
         self.canvas.create_text(10, 90, anchor = tk.NW, text = "Contraseña: ")
-        self.password_entry = tk.Entry(self.canvas, width = 8, validate = "key", validatecommand = vcmd)
+        self.password_entry = tk.Entry(self.canvas, show = "*", width = 8, validate = "key", validatecommand = vcmd)
         self.password_entry.place(x = 150, y = 90)
 
         self.canvas.create_text(10, 110, anchor = tk.NW, text = "Confirmar Contraseña: ")
-        self.confirm_password_entry = tk.Entry(self.canvas, width = 8, validate = "key", validatecommand = vcmd)
+        self.confirm_password_entry = tk.Entry(self.canvas, show = "*", width = 8, validate = "key", validatecommand = vcmd)
         self.confirm_password_entry.place(x = 150, y = 110)
 
         self.canvas.create_text(10, 130, anchor = tk.NW, text = "Correo: ")
@@ -172,7 +173,7 @@ class RegisterUI:
         player_info.append(self.country_combo.get())
         player_info.append(self.image_name)
 
-        result = self.player_manager.add(player_info)
+        result = self.player_manager.add(player_info, self.admin_manager)
         match result:
             case -1:
                 messagebox.showerror("Error", "El nombre debe tener entre 5 y 30 caracteres")

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from DeckBuilder import *
+from logic.DeckBuilder import *
 class AddDeckUI:
     deck_builder = DeckBuilder()
     cards = []
@@ -94,23 +94,23 @@ class AddDeckUI:
             case -1:        
                 messagebox.showerror("Error", "No hay espacio para un nuevo Deck")
                 return
-            case -2:        
-                messagebox.showerror("Error", "No pueden existir dos cartas repetidas")
+            case -2:
+                messagebox.showerror("Error", "Ya existe un deck con el nombre ingresado")
                 return
             case -3:        
-                messagebox.showerror("Error", "Demasiadas cartas Ultra-Raras")
+                messagebox.showerror("Error", "No pueden existir dos cartas repetidas")
                 return
             case -4:        
-                messagebox.showerror("Error", "Demasiadas cartas Muy Raras")
+                messagebox.showerror("Error", "Demasiadas cartas Ultra-Raras")
                 return
             case -5:        
-                messagebox.showerror("Error", "Demasiadas cartas Raras")
+                messagebox.showerror("Error", "Demasiadas cartas Muy Raras")
                 return
             case -6:        
-                messagebox.showerror("Error", "Demasiadas cartas Normales")
+                messagebox.showerror("Error", "Demasiadas cartas Raras")
                 return
             case -7:        
-                messagebox.showerror("Error", "Demasiadas carta Básicas")
+                messagebox.showerror("Error", "Demasiadas cartas Normales")
                 return
             case _:        
                 messagebox.showinfo("Éxito", "Deck creado")
@@ -165,5 +165,6 @@ class AddDeckUI:
         """
         back returns to the UI that called this one.
         """
+        self.decks_listbox.delete(0, tk.END)
         self.window.destroy()
         self.caller.window.deiconify()

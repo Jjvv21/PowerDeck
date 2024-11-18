@@ -1,5 +1,5 @@
 from datetime import date
-from KeyGeneration import generateKey
+from commons.KeyGeneration import generateKey
 
 class Card:
     name = ""
@@ -29,11 +29,11 @@ class Card:
         self.creation_date = date.today()
         self.last_modification = self.creation_date
         if name_id == "":
-            self.name_id = "C-" + generateKey()
+            self.name_id = generateKey(["C-"])
         else:
             self.name_id = name_id
             self.main = False
-        self.var_id = "V-" + generateKey()
+        self.var_id = generateKey(["V-"])
 
     def setStats(self, stats):
         """
@@ -71,7 +71,7 @@ class Card:
         return self.race
 
     def setRarity(self, rarity):
-        self.race = rarity
+        self.rarity = rarity
 
     def getRarity(self):
         return self.rarity

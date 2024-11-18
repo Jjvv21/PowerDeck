@@ -1,12 +1,8 @@
-from Deck import *
+from logic.Deck import *
+from logic.DeckError import *
 
 class DeckBuilder:
-    max_cards = 15
-    max_urs = round(max_cards*0.1)
-    max_mrs = round(max_cards*0.15)
-    max_rs = round(max_cards*0.2)
-    max_ns = round(max_cards*0.25)
-    max_bs = round(max_cards*0.3)
+    max_cards = 10
 
     def __init__(self):
         """
@@ -14,11 +10,10 @@ class DeckBuilder:
         for each rarity exceeds or is less than the number of cards needed for a deck, and
         if so it changes the basic maximum to fix this.
         """
-        totals = self.max_urs + self.max_mrs + self.max_rs + self.max_ns + self.max_bs
-        if totals < self.max_cards:
-            self.max_bs += self.max_cards - totals
-        elif totals > self.max_cards:
-            self.max_bs -= totals - self.max_cards
+        self.max_urs = round(self.max_cards*0.1)
+        self.max_mrs = round(self.max_cards*0.15)
+        self.max_rs = round(self.max_cards*0.2)
+        self.max_ns = round(self.max_cards*0.25)
 
     def getMaxCards(self):
         """
@@ -27,7 +22,7 @@ class DeckBuilder:
 
         :return: list with the maximum number of cards, ultrarares, veryrares, rares, normals and basics.
         """
-        maxs = [self.max_cards, self.max_urs, self.max_mrs, self.max_rs, self.max_ns, self.max_bs]
+        maxs = [self.max_cards, self.max_urs, self.max_mrs, self.max_rs, self.max_ns]
         return maxs
     
     def createDeck(self, player, name, cards):
@@ -42,18 +37,21 @@ class DeckBuilder:
         :cards: list of cards to be added to the deck.
         :return: int corresponding to the result of the creation.
         """
-        if len(player.showDecks()) >= 15:
-            return -1
+        decks = player.showDecks()
+        if len(decks) >= 15:
+            return DeckError.NO_SPACE.value
 
+        for d in decks:
+            if d.getName() == name:
+                return DeckError.USED_NAME.value
         urs = 0
         mrs = 0
         rs = 0
         ns = 0
-        bs = 0
         for i in cards:
             for j in cards:
                 if i.getName() == j.getName() and not (i is j):
-                    return -2
+                    return DeckError.DUPLICATE_CARD.value
             rarity = i.getRarity()
             match rarity:
                 case "Ultra-Rara":
@@ -64,19 +62,15 @@ class DeckBuilder:
                     rs += 1
                 case "Normal":
                     ns += 1
-                case "Básica":
-                    bs += 1
 
         if urs > self.max_urs:
-            return -3
+            return DeckError.TOO_MANY_URS.value
         if mrs > self.max_mrs:
-            return -4
+            return DeckError.TOO_MANY_MRS.value
         if rs > self.max_rs:
-            return -5
+            return DeckError.TOO_MANY_RS.value
         if ns > self.max_ns:
-            return -6
-        if bs > self.max_bs:
-            return -7
+            return DeckError.TOO_MANY_NS.value
         
         newDeck = Deck(name, cards)
         return player.addDeck(newDeck)

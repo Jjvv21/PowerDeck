@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from AddDeckUI import *
+from UI.AddDeckUI import *
 
 class MainUI:
 

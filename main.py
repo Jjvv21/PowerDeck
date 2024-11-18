@@ -1,4 +1,4 @@
-from LogInUI import *
+from UI.LogInUI import *
 
 def main():
     root = tk.Tk()

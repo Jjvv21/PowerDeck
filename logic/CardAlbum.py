@@ -1,31 +1,21 @@
-import pickle
+from logic.Manager import *
 
-from Card import *
+from logic.Card import *
+from logic.CardResult import *
 
-class CardAlbum:
-    cards = []
-    save_file = "gamedata\cards.txt"
+class CardAlbum(Manager):
 
     def __init__(self):
         """
         Constructor that intializes the card album by opening the file and trying to add the cards in the
         file to its list.
         """
-        file = open(self.save_file, "rb")
-        try:
-            self.cards.extend(pickle.load(file))
-        except:
-            print("no cards found")
-        finally:
-            file.close()
-
-    def save(self):
-        """
-        save saves the cards in the album list to the file.
-        """
-        file = open(self.save_file, "wb")
-        pickle.dump(self.cards, file)
-        file.close()
+        Manager.__init__(self, "gamedata/cards.txt")
+        with open(self.getSaveFile(), "rb") as file:
+            try:
+                self.setData(pickle.load(file))
+            except:
+                print("no cards found")
 
     def add(self, card_info, stats_strs):
         """
@@ -47,39 +37,40 @@ class CardAlbum:
         bonus_power_str = card_info[7]
         
         if len(name) < 5:
-            return -1
+            return CardResult.NAME_LENGTH.value
         
         if len(var) < 5:
-            return -2
+            return CardResult.VARIANT_NAME_LENGTH.value
         
+        cards = self.getData()
         nameID = ""
-        if len(self.cards) > 0:
-            for i in self.cards:
+        if len(cards) > 0:
+            for i in cards:
                 if i.getName() == name:
                     nameID = i.getID()[0: 14]
                     if i.getVariantName() == var:
-                        return -3
+                        return CardResult.DUPLICATE.value
         
         if image == "noImage.jpg":
-            return -4
+            return CardResult.NO_IMAGE.value
         
         if race == "":
-            return -5
+            return CardResult.NO_RACE.value
         
         if rarity == "":
-            return -6
+            return CardResult.NO_RARITY.value
         
         if turn_power_str == "":
-            return -7
+            return CardResult.INVALID_TURN_POWER.value
         turn_power = int(turn_power_str)
         if turn_power > 100:
-            return -8
+            return CardResult.INVALID_TURN_POWER.value
         
         if bonus_power_str == "":
-            return -9
+            return CardResult.INVALID_BONUS_POWER.value
         bonus_power = int(bonus_power_str)
         if bonus_power > 100:
-            return -10
+            return CardResult.INVALID_BONUS_POWER.value
 
         stats = []
         i = 0
@@ -94,7 +85,7 @@ class CardAlbum:
             stats.append(stat)
             i += 1
         if len(stats) < 26:
-            return -11 - i
+            return CardResult.INVALID_STAT.value
         
         newCard = Card(nameID)
         newCard.setName(name)
@@ -106,37 +97,40 @@ class CardAlbum:
         newCard.setTurnPower(turn_power)
         newCard.setBonusPower(bonus_power)
         newCard.setStats(stats)
-        self.cards.append(newCard)
-        self.sort()
-        if name == "":
-            return 0
+        self.addData(newCard)
+        self.setData(self.sort(self.getData()))
+        self.save()
+        if nameID == "":
+            return CardResult.CREATED_MAIN.value
         else:
-            return 1
+            return CardResult.CREATED_VARIANT.value
 
-    def sort(self):
+    def sort(self, cards):
         """
         sorts adds all cards names in lowercase to a list to use python's sort, 
         then checks the name of the cards to place them in the order obtained with 
         the sort and updates the album list.
+
+        :cards: list with the cards to sorted.        
+        :return: list with the sorted cards.
         """
         order = []
-        for i in self.cards:
+        for i in cards:
             name = i.getName().lower()
             var = i.getVariantName().lower()
             order.append(name + var)
         order.sort()
-
+    	
         sorted_cards = []
         for j in range(0, len(order)):
-            for k in self.cards:
+            for k in cards:
                 name = k.getName().lower()
                 var = k.getVariantName().lower()
                 if (name + var) == order[j]:
                     sorted_cards.append(k)
 
-        self.cards = sorted_cards
-        self.save()
+        return sorted_cards
 
     def getCards(self):
-        return self.cards
+        return self.getData()
         

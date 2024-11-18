@@ -1,5 +1,5 @@
 from datetime import date
-from KeyGeneration import generateKey
+from commons.KeyGeneration import generateKey
 
 class Deck:
     name = ""
@@ -18,7 +18,7 @@ class Deck:
         self.name = name
 
         self.creation_date = date.today()
-        id = "D-" + generateKey()
+        id =  generateKey(["D-"])
 
         self.addCards(cards)
 
@@ -30,6 +30,9 @@ class Deck:
     
     def getCreationDate(self):
         return self.creation_date
+    
+    def getID(self):
+        return self.id
 
     def addCards(self, cards):
         self.cards = cards
