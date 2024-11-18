@@ -1,5 +1,6 @@
 from logic.UserManager import *
 from logic.Admin import *
+from logic.AdminError import *
 
 class AdminManager(UserManager):
 
@@ -29,31 +30,31 @@ class AdminManager(UserManager):
         role = admin_info[3]
 
         if len(name) < 5:
-            return -1
+            return AdminError.NAME_LENGTH.value
         
         if mail == "":
-            return -2
+            return AdminError.NO_MAIL.value
         
         admins = self.getData()
         if len(admins) > 0:
             for i in admins:
                 if i.getMail() == mail:
-                    return -3
+                    return AdminError.USED_MAIL.value
         
         players = player_manager.getData()
         if len(players) > 0:
             for j in players:
                 if j.getMail() == mail:
-                    return -3
+                    return AdminError.USED_MAIL.value
                 
         if len(password) < 6:
-            return -4
+            return AdminError.PASSWORD_LENGTH.value
 
         if not self.checkPassword(password):
-            return -5        
+            return AdminError.INVALID_PASSWORD.value     
         
         if role == "":
-            return -6
+            return AdminError.NO_ROLE.value
         
         newAdmin = Admin()
         newAdmin.setName(name)

@@ -4,6 +4,7 @@ from logic.UserManager import *
 from logic.Player import *
 from logic.CardAlbum import *
 from logic.DeckBuilder import *
+from logic.PlayerError import *
 
 class PlayerManager(UserManager):
     album = CardAlbum()
@@ -14,7 +15,7 @@ class PlayerManager(UserManager):
         Constructor that intializes the player manager by opening the file and trying to add the players in the
         file to its list.
         """
-        UserManager.__init__(self, "gamedata\player_accounts.txt")
+        UserManager.__init__(self, "gamedata/player_accounts.txt")
         with open(self.getSaveFile(), "rb") as file:
             try:
                 self.setData(pickle.load(file))
@@ -36,36 +37,36 @@ class PlayerManager(UserManager):
         country = player_info[4]
         image = player_info[5]
         if len(name) < 5:
-            return -1
+            return PlayerError.NAME_LENGTH.value
         
         if len(username) < 5:
-            return -2
+            return PlayerError.USERNAME_LENGTH.value
         
         if mail == "":
-            return -3
+            return PlayerError.NO_MAIL.value
         
         players = self.getData()
         if len(players) > 0:
             for i in players:
                 if i.getUser() == username:
-                    return -4
+                    return PlayerError.USERNAME_TAKEN.value
                 if i.getMail() == mail:
-                    return -5
+                    return PlayerError.USED_MAIL.value
                 
         admins = admin_manager.getData()
         if len(admins) > 0:
             for j in admins:
                 if j.getMail() == mail:
-                    return -5
+                    return PlayerError.USED_MAIL.value
         
         if len(password) < 6:
-            return -6
+            return PlayerError.PASSWORD_LENGTH.value
 
         if not self.checkPassword(password):
-            return -7        
+            return PlayerError.INVALID_PASSWORD.value     
         
         if country == "":
-            return -8
+            return PlayerError.NO_COUNTRY.value
         
         newPlayer = Player()
         newPlayer.setName(name)

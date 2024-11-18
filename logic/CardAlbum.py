@@ -1,6 +1,7 @@
 from logic.Manager import *
 
 from logic.Card import *
+from logic.CardResult import *
 
 class CardAlbum(Manager):
 
@@ -9,7 +10,7 @@ class CardAlbum(Manager):
         Constructor that intializes the card album by opening the file and trying to add the cards in the
         file to its list.
         """
-        Manager.__init__(self, "gamedata\cards.txt")
+        Manager.__init__(self, "gamedata/cards.txt")
         with open(self.getSaveFile(), "rb") as file:
             try:
                 self.setData(pickle.load(file))
@@ -36,10 +37,10 @@ class CardAlbum(Manager):
         bonus_power_str = card_info[7]
         
         if len(name) < 5:
-            return -1
+            return CardResult.NAME_LENGTH.value
         
         if len(var) < 5:
-            return -2
+            return CardResult.VARIANT_NAME_LENGTH.value
         
         nameID = ""
         if len(self.cards) > 0:
@@ -47,28 +48,28 @@ class CardAlbum(Manager):
                 if i.getName() == name:
                     nameID = i.getID()[0: 14]
                     if i.getVariantName() == var:
-                        return -3
+                        return CardResult.DUPLICATE.value
         
         if image == "noImage.jpg":
-            return -4
+            return CardResult.NO_IMAGE.value
         
         if race == "":
-            return -5
+            return CardResult.NO_RACE.value
         
         if rarity == "":
-            return -6
+            return CardResult.NO_RARITY.value
         
         if turn_power_str == "":
-            return -7
+            return CardResult.INVALID_TURN_POWER.value
         turn_power = int(turn_power_str)
         if turn_power > 100:
-            return -8
+            return CardResult.INVALID_TURN_POWER.value
         
         if bonus_power_str == "":
-            return -9
+            return CardResult.INVALID_BONUS_POWER.value
         bonus_power = int(bonus_power_str)
         if bonus_power > 100:
-            return -10
+            return CardResult.INVALID_BONUS_POWER.value
 
         stats = []
         i = 0
@@ -83,7 +84,7 @@ class CardAlbum(Manager):
             stats.append(stat)
             i += 1
         if len(stats) < 26:
-            return -11 - i
+            return CardResult.INVALID_STAT.value
         
         newCard = Card(nameID)
         newCard.setName(name)
@@ -99,9 +100,9 @@ class CardAlbum(Manager):
         self.setData(self.sort(self.getData()))
         self.save()
         if nameID == "":
-            return 0
+            return CardResult.CREATED_MAIN.value
         else:
-            return 1
+            return CardResult.CREATED_VARIANT.value
 
     def sort(self, cards):
         """

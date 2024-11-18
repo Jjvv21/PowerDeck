@@ -12,9 +12,9 @@ class UserManager(Manager):
 
     def checkPassword(self, password):
         """
-        checkPassword checks every character in a password to verify that theres is at least 
-        one alphabetic character and one numeric character the new player and adds it to the list,
-        then returns the index for the created player.
+        checkPassword checks every character in a password to verify that there is at least 
+        one alphabetic character and one numeric character the new user and adds it to the list,
+        then returns the index for the created user.
         
         :password: string with the password to check.
         :return: True if there are both alphabetic and numeric charaters, False otherwise.
