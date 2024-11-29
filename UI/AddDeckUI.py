@@ -1,8 +1,8 @@
-import tkinter as tk
 from tkinter import messagebox
 
+from UI.SubUI import *
 from logic.DeckBuilder import *
-class AddDeckUI:
+class AddDeckUI(SubUI):
     deck_builder = DeckBuilder()
     cards = []
     decks = []
@@ -16,12 +16,10 @@ class AddDeckUI:
         :player_manager: manager for the players accounts info.
         :player: player that is currently logged in.
         """
-        self.caller = caller
+        SubUI.__init__(self, window, caller, 800, 600)
         self.player_manager = player_manager
         self.player = player
         self.window = window
-        self.canvas = tk.Canvas(self.window, width = 800, height = 600, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
         self.name_entry = tk.Entry(self.canvas, width = 30)
@@ -54,9 +52,6 @@ class AddDeckUI:
 
         self.show_button = tk.Button(self.canvas, text = "Ver Deck", command = self.showDeck)
         self.show_button.place(x = 600, y = 400)
-
-        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 740, y = 570)
 
     def nameCharCount(self, event):
         """
@@ -154,17 +149,3 @@ class AddDeckUI:
             messagebox.showinfo("Deck", f"{deck.getName()}:\n \n" + cards_str + f"\n \nFecha de creación: {deck.getCreationDate()}\n" + valid)
         else:
             messagebox.showerror("Error", "No existen decks para mostrar")
-
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.decks_listbox.delete(0, tk.END)
-        self.window.destroy()
-        self.caller.window.deiconify()

@@ -1,11 +1,11 @@
-import tkinter as tk 
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 
+from UI.SubUI import *
 from commons.ImageHandler import *
 
-class CreateCardUI:
+class CreateCardUI(SubUI):
     image_name = "noImage.jpg"
     path = ""
     img_handler = ImageHandler()
@@ -20,11 +20,8 @@ class CreateCardUI:
         :caller: UI that called this one.
         :album: manager for the cards info.
         """
-        self.caller = caller
+        SubUI.__init__(self, window, caller, 750, 550)
         self.album = album
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 750, height = 550, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(200, 5, anchor = tk.NW, text = "Crear Carta")
         
@@ -83,9 +80,6 @@ class CreateCardUI:
 
         self.clear_button = tk.Button(self.canvas, text = "Reiniciar", command = self.clearEntries)
         self.clear_button.place(x = 100, y = 430)
-        
-        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 690, y = 520)
 
     def placeStatEntries(self, posX, posY):
         """
@@ -413,16 +407,3 @@ class CreateCardUI:
                 messagebox.showerror("Error", "Ingrese un valor para el bonus de poder entre 0 y 100")
             case -9:
                 messagebox.showerror("Error", "Valor inválido en atributos, deben ser números entre -100 y 100")
-
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.window.destroy()
-        self.caller.window.deiconify()

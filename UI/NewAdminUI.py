@@ -1,8 +1,9 @@
-import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-class NewAdminUI:
+from UI.SubUI import *
+
+class NewAdminUI(SubUI):
 
     def __init__(self, window, caller, admin_manager, player_manager):
         """
@@ -12,12 +13,9 @@ class NewAdminUI:
         :caller: UI that called this one.
         :admin_manager: manager for the admins accounts info.
         """
-        self.caller = caller
+        SubUI.__init__(self, window, caller, 550, 450)
         self.admin_manager = admin_manager
         self.player_manager = player_manager
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 550, height = 450, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
         self.name_entry = tk.Entry(self.canvas, width = 30)
@@ -42,11 +40,8 @@ class NewAdminUI:
         self.role_combo = ttk.Combobox(self.canvas, state = "readonly",values = ["Juego", "Control"], width = 7)
         self.role_combo.place(x = 60, y = 150)
 
-        self.back_button = tk.Button(self.canvas, text = "Crear", command = self.createAdmin)
-        self.back_button.place(x = 50, y = 320)
-
-        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 490, y = 330)
+        self.create_button = tk.Button(self.canvas, text = "Crear", command = self.createAdmin)
+        self.create_button.place(x = 50, y = 320)
 
     def nameCharCount(self, event):
         """
@@ -111,16 +106,3 @@ class NewAdminUI:
                 messagebox.showinfo("Éxito", f"Administrador de {admin_info[1]} creado \n \n")
                 self.admin_manager.save()
                 self.back()
-        
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.window.destroy()
-        self.caller.window.deiconify()

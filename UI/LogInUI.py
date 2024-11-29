@@ -1,13 +1,14 @@
-import tkinter as tk
+
 from tkinter import messagebox
 
+from UI.TopUI import *
 from logic.PlayerManager import *
 from logic.AdminManager import *
 from UI.RegisterUI import *
 from UI.MainUI import *
 from UI.AdminUI import *
 
-class LogInUI:
+class LogInUI(TopUI):
     player_manager = PlayerManager()
     admin_manager = AdminManager()
 
@@ -17,9 +18,7 @@ class LogInUI:
 
         :window: Toplevel container for the widgets.
         """
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 250, height = 150, bg = "#78a090")
-        self.canvas.pack()
+        TopUI.__init__(self, window, 250, 150)
 
         self.canvas.create_text(80, 10, anchor = tk.NW, text = "Inicio de Sesión")
 
@@ -113,9 +112,3 @@ class LogInUI:
         register_window.resizable(width = tk.NO, height = tk.NO)
         register_ui = RegisterUI(register_window, self, self.player_manager, self.admin_manager)
         register_ui.run()
-
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()

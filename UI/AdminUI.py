@@ -1,9 +1,10 @@
+from UI.SubUI import *
 from logic.CardAlbum import *
 from UI.CreateCardUI import *
 from UI.AlbumUI import *
 from UI.NewAdminUI import *
 
-class AdminUI:
+class AdminUI(SubUI):
     album = CardAlbum()
 
     def __init__(self, window, caller, admin, admin_manager, player_manager):
@@ -12,13 +13,10 @@ class AdminUI:
 
         :window: Toplevel container for the widgets.
         """
+        SubUI.__init__(self, window, caller, 250, 250)
         self.admin = admin
         self.admin_manager = admin_manager
         self.player_manager = player_manager
-        self.caller = caller
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 250, height = 250, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(50, 5, anchor = tk.NW, text = f"Administración de {self.admin.getRole()}")
         self.canvas.create_text(40, 25, anchor = tk.NW, text = f"Bienvenido {self.admin.getName()}")
@@ -32,7 +30,7 @@ class AdminUI:
         self.new_admin_button = tk.Button(self.canvas, text = "Crear Administrador", command = self.toNewAdmin)
         self.new_admin_button.place(x = 10, y = 220)
 
-        self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
+        self.back_button.config(text = "Cerrar Sesión")
         self.back_button.place(x = 150, y = 220)
 
     def placeGameOptions(self):
@@ -93,16 +91,3 @@ class AdminUI:
         new_admin_window.resizable(width = tk.NO, height = tk.NO)
         new_admin_ui = NewAdminUI(new_admin_window, self, self.admin_manager, self.player_manager)
         new_admin_ui.run()
-    
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.window.destroy()
-        self.caller.window.deiconify()

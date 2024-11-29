@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 
+from UI.SubUI import *
 from commons.ImageHandler import *
 
-class AlbumUI:
+class AlbumUI(SubUI):
     selected_card = 0
     image_name = "noImage.jpg"
     img_handler = ImageHandler()
@@ -20,10 +21,7 @@ class AlbumUI:
         :caller: UI that called this one.
         :cards: list of cards to show.
         """
-        self.caller = caller
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 800, height = 600, bg = "#78a090")
-        self.canvas.pack()
+        SubUI.__init__(self, window, caller, 800, 600)
 
         self.scroll = tk.Scrollbar(self.canvas)
         self.scroll.place(height = 484, x = 386, y = 50)
@@ -87,9 +85,6 @@ class AlbumUI:
 
         self.show_all_button = tk.Button(self.canvas, text = "Ver todas las cartas", command = self.showAll, state = tk.DISABLED)
         self.show_all_button.place(x = 50, y = 570)
-
-        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 740, y = 570)
 
     def showSelection(self):
         """
@@ -183,16 +178,3 @@ class AlbumUI:
         self.listbox.selection_set(0)
         self.show_all_button.config(state = tk.DISABLED)
         self.filter_main_button.config(state = tk.NORMAL)
-    
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-    
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.window.destroy()
-        self.caller.window.deiconify()

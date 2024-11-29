@@ -1,11 +1,11 @@
-import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 
+from UI.SubUI import *
 from commons.ImageHandler import *
 
-class RegisterUI:
+class RegisterUI(SubUI):
     countries = ['Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda',
                 'Arabia Saudita', 'Argelia', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaiyán',
                 'Bahamas', 'Bangladesh', 'Barbados', 'Baréin', 'Belice', 'Benín', 'Bielorrusia', 'Bolivia',
@@ -45,12 +45,9 @@ class RegisterUI:
         :caller: UI that called this one.
         :player_manager: manager for the players accounts info.
         """
-        self.caller = caller
+        SubUI.__init__(self, window, caller, 550, 450)
         self.player_manager = player_manager
         self.admin_manager = admin_manager
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 550, height = 450, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
         self.name_entry = tk.Entry(self.canvas, width = 30)
@@ -89,9 +86,6 @@ class RegisterUI:
 
         self.back_button = tk.Button(self.canvas, text = "Registrar", command = self.createPlayer)
         self.back_button.place(x = 50, y = 320)
-
-        self.back_button = tk.Button(self.canvas, text = "Volver", command = self.back)
-        self.back_button.place(x = 490, y = 330)
 
     def nameCharCount(self, event):
         """
@@ -203,16 +197,3 @@ class RegisterUI:
                 messagebox.showinfo("Éxito", f"Jugador {player_info[1]} creado \n \n" + received_cards_str)
                 self.player_manager.save()
                 self.back()
-        
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
-    def back(self):
-        """
-        back returns to the UI that called this one.
-        """
-        self.window.destroy()
-        self.caller.window.deiconify()

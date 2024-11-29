@@ -2,10 +2,11 @@ import tkinter as tk
 import time, threading
 from tkinter import messagebox
 
+from UI.SubUI import *
 from logic.EmparejamientoClient import *
 from UI.AddDeckUI import *
 
-class MainUI:
+class MainUI(SubUI):
     message = ""
 
     def __init__(self, window, caller, player_manager, player):
@@ -17,6 +18,7 @@ class MainUI:
         :player_manager: manager for the players accounts info.
         :player: player that is currently logged in.
         """
+        SubUI.__init__(self, window, caller, 500, 500)
         self.caller = caller
         self.player_manager = player_manager
         self.player = player
@@ -34,7 +36,7 @@ class MainUI:
         self.deck_button = tk.Button(self.canvas, text = "Crear Deck", command = self.toDeckCreation)
         self.deck_button.place(x = 100, y = 110)
 
-        self.back_button = tk.Button(self.canvas, text = "Cerrar Sesión", command = self.back)
+        self.back_button.config(text = "Cerrar Sesión")
         self.back_button.place(x = 420, y = 470)
 
     def findGame(self):
@@ -66,15 +68,10 @@ class MainUI:
         deck_creation_ui = AddDeckUI(deck_creation_window, self, self.player_manager, self.player)
         deck_creation_ui.run()
 
-    def run(self):
-        """
-        run runs the main loop of the UI.
-        """
-        self.window.mainloop()
-
     def back(self):
         """
         back returns to the UI that called this one.
         """
+        self.player_manager.save()
         self.window.destroy()
         self.caller.window.deiconify()
