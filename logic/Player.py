@@ -7,6 +7,7 @@ class Player(User):
     exp = 0
     owned_cards = []
     decks = []
+    selected_deck = None
 
     def __init__(self):
         """
@@ -68,4 +69,13 @@ class Player(User):
 
         :return: list with the player's decks.
         """
-        return self.decks         
+        return self.decks
+
+    def selectDeck(self, index):
+        self.selected_deck = self.decks[index]
+
+    def getSelectedDeck(self):
+        return self.selected_deck
+
+    def getWin(self):
+        self.exp += 100         

@@ -16,7 +16,7 @@ class ImageHandler:
         image = Image.open(path)
         return ImageTk.PhotoImage(image)
 
-    def checkImage(self, path):
+    def checkImage(self, path: str):
         """
         checkImage checks if a path to a selected file is a jpg or png.
 
@@ -56,3 +56,17 @@ class ImageHandler:
         :path: path to an image anywhere in the computer.
         """
         shutil.copy(path, self.save_path)
+
+    def resizeImage(self, name, size):
+        """
+        loadImage loads an image to show in the UI.
+
+        :name: name of an image already in the program file.
+        :return: image to show.
+        """
+        path = os.path.join(self.folder_name, name)
+        image = Image.open(path)
+        new_width = int(image.size[0]/size)
+        new_height = int(image.size[1]/image.size[0] * new_width)
+        image = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        return ImageTk.PhotoImage(image)

@@ -46,6 +46,9 @@ class Card:
                 self.total_power += self.stats[i]
             self.last_modification = date.today()
 
+    def getStats(self):
+        return self.stats
+
     def setName(self, name):
         self.name = name
 

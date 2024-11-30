@@ -2,7 +2,7 @@ from logic.Deck import *
 from logic.DeckError import *
 
 class DeckBuilder:
-    max_cards = 10
+    max_cards = 15
 
     def __init__(self):
         """

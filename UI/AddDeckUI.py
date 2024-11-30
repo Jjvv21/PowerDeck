@@ -45,13 +45,17 @@ class AddDeckUI(SubUI):
         self.decks_listbox = tk.Listbox(self.canvas, height = 15, width = 30)
         self.decks_listbox.place(x = 549, y = 90)
 
+        self.sel_button = tk.Button(self.canvas, text = "Seleccionar Deck", command = self.selDeck, state = tk.DISABLED)
+        self.sel_button.place(x = 600, y = 400)
         self.updateDecks()
 
         self.create_button = tk.Button(self.canvas, text = "Crear Deck", command = self.createDeck)
         self.create_button.place(x = 200, y = 575)
 
         self.show_button = tk.Button(self.canvas, text = "Ver Deck", command = self.showDeck)
-        self.show_button.place(x = 600, y = 400)
+        self.show_button.place(x = 600, y = 360)
+
+        
 
     def nameCharCount(self, event):
         """
@@ -125,6 +129,7 @@ class AddDeckUI(SubUI):
                 name = i.getName()
                 self.decks_listbox.insert(tk.END, name)
             self.decks_listbox.selection_set(0)
+            self.sel_button.config(state = tk.NORMAL)
 
     def showDeck(self):
         """
@@ -149,3 +154,6 @@ class AddDeckUI(SubUI):
             messagebox.showinfo("Deck", f"{deck.getName()}:\n \n" + cards_str + f"\n \nFecha de creación: {deck.getCreationDate()}\n" + valid)
         else:
             messagebox.showerror("Error", "No existen decks para mostrar")
+
+    def selDeck(self):
+        self.player.selectDeck(self.decks_listbox.curselection()[0])

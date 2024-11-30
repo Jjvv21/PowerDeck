@@ -5,6 +5,7 @@ from tkinter import messagebox
 from UI.SubUI import *
 from logic.EmparejamientoClient import *
 from UI.AddDeckUI import *
+from UI.MatchUI import *
 
 class MainUI(SubUI):
     message = ""
@@ -19,12 +20,8 @@ class MainUI(SubUI):
         :player: player that is currently logged in.
         """
         SubUI.__init__(self, window, caller, 500, 500)
-        self.caller = caller
         self.player_manager = player_manager
         self.player = player
-        self.window = window
-        self.canvas = tk.Canvas(self.window, width = 500, height = 500, bg = "#78a090")
-        self.canvas.pack()
 
         self.canvas.create_text(200, 5, anchor = tk.NW, text = "PowerDeck")
         self.canvas.create_text(190, 25, anchor = tk.NW, text = f"Bienvenido {self.player.getUser()}")
@@ -32,6 +29,9 @@ class MainUI(SubUI):
         self.play_button = tk.Button(self.canvas, text = "Jugar", command = self.findGame)
         self.play_button.place(x = 100, y = 80)
         self.canvas.create_text(150, 85, anchor = tk.NW, text = "", tags = "wait")
+
+        self.play_button = tk.Button(self.canvas, text = "Partida", command = self.toMatch)
+        self.play_button.place(x = 300, y = 80)
 
         self.deck_button = tk.Button(self.canvas, text = "Crear Deck", command = self.toDeckCreation)
         self.deck_button.place(x = 100, y = 110)
@@ -67,6 +67,17 @@ class MainUI(SubUI):
         deck_creation_window.resizable(width = tk.NO, height = tk.NO)
         deck_creation_ui = AddDeckUI(deck_creation_window, self, self.player_manager, self.player)
         deck_creation_ui.run()
+
+    def toMatch(self):
+        """
+        toDeckCreation hides this UI and proceeds to the Deck Creation UI.
+        """
+        self.window.withdraw()
+        match_window = tk.Toplevel()
+        match_window.title("Creación de Decks")
+        match_window.resizable(width = tk.NO, height = tk.NO)
+        match_ui = MatchUI(match_window, self, self.player)
+        match_ui.run()
 
     def back(self):
         """
