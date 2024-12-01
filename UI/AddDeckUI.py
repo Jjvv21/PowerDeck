@@ -156,4 +156,7 @@ class AddDeckUI(SubUI):
             messagebox.showerror("Error", "No existen decks para mostrar")
 
     def selDeck(self):
-        self.player.selectDeck(self.decks_listbox.curselection()[0])
+        i = self.decks_listbox.curselection()[0]
+        self.player.selectDeck(i)
+        messagebox.showinfo("Éxito", f"Seleccionado deck {self.decks_listbox.get(i)} para usar en partida")
+        

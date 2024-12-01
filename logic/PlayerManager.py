@@ -36,7 +36,7 @@ class PlayerManager(UserManager):
         mail = player_info[3]
         country = player_info[4]
         image = player_info[5]
-        if len(name) < 5:
+        if len(name) == 0:
             return PlayerError.NAME_LENGTH.value
         
         if len(username) < 5:

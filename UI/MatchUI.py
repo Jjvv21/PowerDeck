@@ -16,7 +16,7 @@ class MatchUI(SubUI):
             "Sabiduría", "Suerte", "Coodinación", "Amabilidad", "Lealtad", "Disciplina", "Liderazgo", 
             "Prudencia", "Confianza", "Percepción", "Valentía"]
     checking = -1
-    turn_time = 60
+    turn_time = 30
     selected_card = None
     opp_selection = None
     wins = 0
@@ -42,7 +42,7 @@ class MatchUI(SubUI):
         self.opp_selection_image = self.image_handler.resizeImage("noCard.jpg", 2)
         self.canvas.create_text(300, 150, anchor = tk.NW, text = "Empezando partida...", tags = "feed")
         self.canvas.create_text(15, 250, anchor = tk.NW, text = "Tiempo: ")
-        self.canvas.create_text(30, 270, anchor = tk.NW, text = "60s", tags = "time")
+        self.canvas.create_text(30, 270, anchor = tk.NW, text = f"{self.turn_time}s", tags = "time")
         self.canvas.create_image(150, 220, anchor = tk.NW, image = self.selected_card_image, tags = "mycard")
         self.canvas.create_image(550, 220, anchor = tk.NW, image = self.opp_selection_image, tags = "oppcard")
 
@@ -182,17 +182,17 @@ class MatchUI(SubUI):
         self.canvas.itemconfig("feed", text = "Selección de carta")
         self.enableCards()
         start_time = time.time()
-        wait = 60
-        while (self.selected_card == None) and (time.time() - start_time < 60):
-            wait =- (time.time() - start_time)
-            self.canvas.itemconfig("time", text = f"{int(wait)}s")
+        wait = 0
+        while (self.selected_card == None) and (time.time() - start_time < self.turn_time):
+            wait = time.time() - start_time
+            self.canvas.itemconfig("time", text = f"{int(self.turn_time - wait)}s")
         self.disableCards()
         if self.selected_card == None:
             self.playCard(randint(0, 5))
         self.opp_selection = self.opp_deck.pop(0)
         self.opp_selection_image = self.image_handler.resizeImage(self.opp_selection.getImage(), 2)
         self.canvas.itemconfig("oppcard", image = self.opp_selection_image)
-        self.canvas.itemconfig("time", text = "60s")
+        self.canvas.itemconfig("time", text = f"{self.turn_time}s")
         self.endTurn()
 
     def drawCard(self):

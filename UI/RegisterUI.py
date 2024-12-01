@@ -52,8 +52,6 @@ class RegisterUI(SubUI):
         self.canvas.create_text(10, 50, anchor = tk.NW, text = "Nombre: ")
         self.name_entry = tk.Entry(self.canvas, width = 30)
         self.name_entry.place(x = 60, y = 50)   
-        self.name_entry.bind('<KeyPress>', self.nameCharCount)
-        self.name_entry.bind('<KeyRelease>', self.nameCharCount)     
 
         self.canvas.create_text(10, 70, anchor = tk.NW, text = "Alias: ")
         self.username_entry = tk.Entry(self.canvas, width = 30)
@@ -86,16 +84,6 @@ class RegisterUI(SubUI):
 
         self.back_button = tk.Button(self.canvas, text = "Registrar", command = self.createPlayer)
         self.back_button.place(x = 50, y = 320)
-
-    def nameCharCount(self, event):
-        """
-        nameCharCount limits the amount of characters for the name entry.
-
-        :event: event that triggers the check.
-        """
-        count = len(self.name_entry.get())
-        if count >= 30 and event.keysym not in {'BackSpace', 'Delete'}:
-            return 'break'
         
     def usernameCharCount(self, event):
         """
@@ -170,7 +158,7 @@ class RegisterUI(SubUI):
         result = self.player_manager.add(player_info, self.admin_manager)
         match result:
             case -1:
-                messagebox.showerror("Error", "El nombre debe tener entre 5 y 30 caracteres")
+                messagebox.showerror("Error", "Introduzca un nombre")
             case -2:
                 messagebox.showerror("Error", "El alias debe tener entre 5 y 30 caracteres")
             case -3:
@@ -182,7 +170,7 @@ class RegisterUI(SubUI):
             case -6:
                 messagebox.showerror("Error", "Ingrese una contraseña entre 6 y 8 caracteres")
             case -7:
-                messagebox.showerror("Error", "Contraseña inválida, debe ser alfanumérica")
+                messagebox.showerror("Error", "Contraseña inválida, debe ser contener letras y números")
             case -8:
                 messagebox.showerror("Error", "Seleccione un país")
             case _:

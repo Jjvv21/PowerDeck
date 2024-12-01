@@ -28,10 +28,12 @@ class MainUI(SubUI):
 
         self.play_button = tk.Button(self.canvas, text = "Jugar", command = self.findGame)
         self.play_button.place(x = 100, y = 80)
-        self.canvas.create_text(150, 85, anchor = tk.NW, text = "", tags = "wait")
+        self.canvas.create_text(200, 85, anchor = tk.NW, text = "", tags = "wait")
+        self.cancel_button = tk.Button(self.canvas, text = "Cancelar", command = self.cancelSearch)
+        self.cancel_button.place(x = 1000, y = 1000)
 
-        self.play_button = tk.Button(self.canvas, text = "Partida", command = self.toMatch)
-        self.play_button.place(x = 300, y = 80)
+        self.match_button = tk.Button(self.canvas, text = "Partida", command = self.toMatch)
+        self.match_button.place(x = 100, y = 200)
 
         self.deck_button = tk.Button(self.canvas, text = "Crear Deck", command = self.toDeckCreation)
         self.deck_button.place(x = 100, y = 110)
@@ -40,9 +42,14 @@ class MainUI(SubUI):
         self.back_button.place(x = 420, y = 470)
 
     def findGame(self):
-        self.play_button.config(state = tk.DISABLED)
-        threading.Thread(target=self.looking).start()
-        threading.Thread(target=self.showWaitTime).start()
+        self.play_button.place(x = 1000, y = 1000)
+        self.cancel_button.place(x = 100, y = 80)
+        threading.Thread(target = self.looking).start()
+        threading.Thread(target = self.showWaitTime).start()
+
+    def cancelSearch(self):
+        self.cancel_button.place(x = 1000, y = 1000)
+        self.play_button.place(x = 100, y = 80)
 
     def looking(self):
         self.message = connect()
@@ -72,12 +79,16 @@ class MainUI(SubUI):
         """
         toDeckCreation hides this UI and proceeds to the Deck Creation UI.
         """
-        self.window.withdraw()
-        match_window = tk.Toplevel()
-        match_window.title("Creación de Decks")
-        match_window.resizable(width = tk.NO, height = tk.NO)
-        match_ui = MatchUI(match_window, self, self.player)
-        match_ui.run()
+        if self.player.getSelectedDeck() != None:
+            self.window.withdraw()
+            match_window = tk.Toplevel()
+            match_window.title("Creación de Decks")
+            match_window.resizable(width = tk.NO, height = tk.NO)
+            match_ui = MatchUI(match_window, self, self.player)
+            match_ui.run()
+        else:
+            messagebox.showerror("Error", "seleccione un Deck para la partida")
+
 
     def back(self):
         """
