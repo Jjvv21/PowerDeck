@@ -49,17 +49,20 @@ class MainUI(SubUI):
 
     def cancelSearch(self):
         self.cancel_button.place(x = 1000, y = 1000)
+        self.cancel = True
         self.play_button.place(x = 100, y = 80)
 
     def looking(self):
         self.message = connect()
-        self.play_button.config(state = tk.NORMAL)
+        self.cancel_button.place(x = 1000, y = 1000)
+        self.play_button.place(x = 100, y = 80)
         messagebox.showinfo("Éxito", self.message)
         self.message = ""
 
     def showWaitTime(self):
+        self.cancel = False
         start_time = time.time()
-        while (self.message == "") and (time.time() - start_time < 60):
+        while (self.message == "") and (time.time() - start_time < 60) and not self.cancel:
             wait = time.time() - start_time
             self.canvas.itemconfig("wait", text = f"Tiempo de expera: {int(wait)}s")
         self.canvas.itemconfig("wait", text = "")
