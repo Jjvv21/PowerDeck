@@ -84,31 +84,54 @@ class MatchUI(SubUI):
     def placePlayer(self, posX, posY):
         steps = 100
 
-        self.canvas.create_text(posX - 85, posY - 30, anchor = tk.NW, text = "", tags = "stat")
+        info_offset_x = 85
+        num_offset_x = 30
+        stat_offset_y = 75
+        tp_offset_y = 50
+        bp_offset_y = 25
+
+
+        self.canvas.create_text(posX - info_offset_x, posY - stat_offset_y, anchor = tk.NW, text = "Atributo:", tags = "stat")
+        self.canvas.create_text(posX - info_offset_x, posY - tp_offset_y, anchor = tk.NW, text = "Turno de Poder:")
+        self.canvas.create_text(posX - info_offset_x, posY - bp_offset_y, anchor = tk.NW, text = "Bonus:")
+
 
         self.card1 = tk.Button(self.canvas, command = partial(self.playCard, 0), state = tk.DISABLED)
         self.card1.place(x = posX, y = posY)
-        self.canvas.create_text(posX + 30, posY - 30, anchor = tk.NW, text = "", tags = "stat1")
+        self.canvas.create_text(posX + num_offset_x, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat1")
+        self.canvas.create_text(posX + num_offset_x, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp1")
+        self.canvas.create_text(posX + num_offset_x, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp1")
+
 
         self.card2 = tk.Button(self.canvas, command = partial(self.playCard, 1), state = tk.DISABLED)
         self.card2.place(x = posX + steps, y = posY)
-        self.canvas.create_text(posX + 30 + steps, posY - 30, anchor = tk.NW, text = "", tags = "stat2")
+        self.canvas.create_text(posX + num_offset_x + steps, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat2")
+        self.canvas.create_text(posX + num_offset_x + steps, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp2")
+        self.canvas.create_text(posX + num_offset_x + steps, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp2")
 
         self.card3 = tk.Button(self.canvas, command = partial(self.playCard, 2), state = tk.DISABLED)
         self.card3.place(x = posX + 2*steps, y = posY)
-        self.canvas.create_text(posX + 30 + 2*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat3")
+        self.canvas.create_text(posX + num_offset_x + 2*steps, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat3")
+        self.canvas.create_text(posX + num_offset_x + 2*steps, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp3")
+        self.canvas.create_text(posX + num_offset_x + 2*steps, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp3")
 
         self.card4 = tk.Button(self.canvas, command = partial(self.playCard, 3), state = tk.DISABLED)
         self.card4.place(x = posX + 3*steps, y = posY)
-        self.canvas.create_text(posX + 30 + 3*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat4")
+        self.canvas.create_text(posX + num_offset_x + 3*steps, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat4")
+        self.canvas.create_text(posX + num_offset_x + 3*steps, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp4")
+        self.canvas.create_text(posX + num_offset_x + 3*steps, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp4")
 
         self.card5 = tk.Button(self.canvas, command = partial(self.playCard, 4), state = tk.DISABLED)
         self.card5.place(x = posX + 4*steps, y = posY)
-        self.canvas.create_text(posX + 30 + 4*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat5")
+        self.canvas.create_text(posX + num_offset_x + 4*steps, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat5")
+        self.canvas.create_text(posX + num_offset_x + 4*steps, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp5")
+        self.canvas.create_text(posX + num_offset_x + 4*steps, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp5")
 
         self.card6 = tk.Button(self.canvas, command = partial(self.playCard, 5), state = tk.DISABLED)
         self.card6.place(x = posX + 5*steps, y = posY)
-        self.canvas.create_text(posX + 30 + 5*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat6")
+        self.canvas.create_text(posX + num_offset_x + 5*steps, posY - stat_offset_y, anchor = tk.NW, text = "_", tags = "stat6")
+        self.canvas.create_text(posX + num_offset_x + 5*steps, posY - tp_offset_y, anchor = tk.NW, text = "_", tags = "tp6")
+        self.canvas.create_text(posX + num_offset_x + 5*steps, posY - bp_offset_y, anchor = tk.NW, text = "_", tags = "bp6")
 
     def updateHand(self, action):
         for i in range(0, 6):
@@ -130,13 +153,41 @@ class MatchUI(SubUI):
             self.canvas.itemconfig("stat4", text = f"{self.my_hand[3].getStats()[self.checking]}")
             self.canvas.itemconfig("stat5", text = f"{self.my_hand[4].getStats()[self.checking]}")
             self.canvas.itemconfig("stat6", text = f"{self.my_hand[5].getStats()[self.checking]}")
+
+            self.canvas.itemconfig("tp1", text = f"{self.my_hand[0].getTurnPower()}")
+            self.canvas.itemconfig("tp2", text = f"{self.my_hand[1].getTurnPower()}")
+            self.canvas.itemconfig("tp3", text = f"{self.my_hand[2].getTurnPower()}")
+            self.canvas.itemconfig("tp4", text = f"{self.my_hand[3].getTurnPower()}")
+            self.canvas.itemconfig("tp5", text = f"{self.my_hand[4].getTurnPower()}")
+            self.canvas.itemconfig("tp6", text = f"{self.my_hand[5].getTurnPower()}")
+
+            self.canvas.itemconfig("bp1", text = f"{self.my_hand[0].getBonusPower()}")
+            self.canvas.itemconfig("bp2", text = f"{self.my_hand[1].getBonusPower()}")
+            self.canvas.itemconfig("bp3", text = f"{self.my_hand[2].getBonusPower()}")
+            self.canvas.itemconfig("bp4", text = f"{self.my_hand[3].getBonusPower()}")
+            self.canvas.itemconfig("bp5", text = f"{self.my_hand[4].getBonusPower()}")
+            self.canvas.itemconfig("bp6", text = f"{self.my_hand[5].getBonusPower()}")
         else:
-            self.canvas.itemconfig("stat1", text = "")
-            self.canvas.itemconfig("stat2", text = "")
-            self.canvas.itemconfig("stat3", text = "")
-            self.canvas.itemconfig("stat4", text = "")
-            self.canvas.itemconfig("stat5", text = "")
-            self.canvas.itemconfig("stat6", text = "")
+            self.canvas.itemconfig("stat1", text = "_")
+            self.canvas.itemconfig("stat2", text = "_")
+            self.canvas.itemconfig("stat3", text = "_")
+            self.canvas.itemconfig("stat4", text = "_")
+            self.canvas.itemconfig("stat5", text = "_")
+            self.canvas.itemconfig("stat6", text = "_")
+
+            self.canvas.itemconfig("tp1", text = "_")
+            self.canvas.itemconfig("tp2", text = "_")
+            self.canvas.itemconfig("tp3", text = "_")
+            self.canvas.itemconfig("tp4", text = "_")
+            self.canvas.itemconfig("tp5", text = "_")
+            self.canvas.itemconfig("tp6", text = "_")
+
+            self.canvas.itemconfig("bp1", text = "_")
+            self.canvas.itemconfig("bp2", text = "_")
+            self.canvas.itemconfig("bp3", text = "_")
+            self.canvas.itemconfig("bp4", text = "_")
+            self.canvas.itemconfig("bp5", text = "_")
+            self.canvas.itemconfig("bp6", text = "_")
 
     def createBotDeck(self):
         self.opp_deck = []
@@ -212,7 +263,7 @@ class MatchUI(SubUI):
         self.disableCards()
         if self.selected_card == None:
             self.playCard(randint(0, 5))
-        self.canvas.itemconfig("stat", text = "")
+        self.canvas.itemconfig("stat", text = "Atributo:")
         self.opp_selection = self.opp_deck.pop(0)
         self.opp_selection_image = self.image_handler.resizeImage(self.opp_selection.getImage(), 2)
         self.canvas.itemconfig("oppcard", image = self.opp_selection_image)
