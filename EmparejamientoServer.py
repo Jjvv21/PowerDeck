@@ -5,6 +5,7 @@ import time
 # Dirección y puerto del servidor
 HOST = '127.0.0.1'
 PORT = 65432
+TIMEOUT = 60
 
 # Lista para almacenar los jugadores que están esperando en la cola
 player_queue = []
@@ -15,10 +16,17 @@ match_history = {}
 # Esta función maneja la conexión con cada jugador
 def handle_player_connection(player_socket, player_address):
     # Añadimos al jugador a la cola junto con su dirección
-    player_queue.append((player_socket, player_address))
     print(f"Jugador conectado: {player_address}. Total de jugadores en cola: {len(player_queue)}")
-
+    join_time = time.time()
     while True:
+        if time.time() - join_time > TIMEOUT:
+            print(f"{player_address} agotó su tiempo.")
+            player_socket.sendall(b"No se encontro rival")
+            for i in range(0, len(player_queue)):
+                if player_socket is player_queue[i][0]:
+                    player_queue.pop(i)
+            player_socket.close()
+            return
         # Revisamos si hay al menos dos jugadores en la cola para emparejarlos
         if len(player_queue) >= 2:
             # Sacamos a los dos primeros jugadores de la cola
@@ -30,40 +38,32 @@ def handle_player_connection(player_socket, player_address):
             match_history[addr2] = addr1
 
             # Les enviamos un mensaje para que acepten la partida
-            player1.sendall("Emparejado con otro jugador. ¿Aceptar partida? (Y/N)".encode("utf-8"))
-            player2.sendall("Emparejado con otro jugador. ¿Aceptar partida? (Y/N)".encode("utf-8"))
+            player1.sendall("Emparejado con otro jugador.".encode("utf-8"))
+            player2.sendall("Emparejado con otro jugador.".encode("utf-8"))
 
 
             # Esperamos la respuesta de ambos jugadores
-            player1_response = wait_for_response(player1, addr1)
-            player2_response = wait_for_response(player2, addr2)
+            player1.close()
+            player2.close()
 
-            if player1_response != "Y" or player2_response != "Y":
-                # Si alguno cancela, notificamos a ambos y terminamos el emparejamiento
-                player1.sendall(b"La cola fue cancelada por tu oponente.")
-                player2.sendall(b"La cola fue cancelada por tu oponente.")
-                print(f"Emparejamiento cancelado entre {addr1} y {addr2}")
-            else:
-                # Si ambos aceptan, se inicia la partida
-                player1.sendall(b"Partida aceptada. Inicia el juego!")
-                player2.sendall(b"Partida aceptada. Inicia el juego!")
-                print(f"Partida iniciada entre {addr1} y {addr2}")
         else:
             # Si no hay suficientes jugadores, notificamos al jugador que espere
-            player_socket.sendall(b"Esperando un rival...")
             time.sleep(1)
-
-# Esta función espera una respuesta del jugador dentro de un tiempo límite
-def wait_for_response(player_socket, player_address, timeout=10):
-    player_socket.settimeout(timeout)  # Establecemos el tiempo límite
-    try:
-        # Recibimos la respuesta del jugador
-        response = player_socket.recv(1024).decode().strip()
-        return response
-    except socket.timeout:
-        # Si el jugador no responde a tiempo, devolvemos "N" (cancelación)
-        print(f"Jugador {player_address} no respondió a tiempo.")
-        return "N"
+            try:
+                # Verificacion de desconexion
+                player_socket.settimeout(1)
+                data = player_socket.recv(1024)
+                if not data:
+                    raise ConnectionResetError
+                player_socket.sendall(b"Esperando un rival...")
+            except socket.timeout:
+                continue  # Continuar
+            except ConnectionResetError:
+                for i in range(0, len(player_queue)):
+                    if player_socket is player_queue[i][0]:
+                        player_queue.pop(i)
+                print(f"{player_address} desconectado.")
+                return
 
 # Esta función inicia el servidor y escucha conexiones entrantes
 def start_server():
@@ -77,6 +77,7 @@ def start_server():
         while True:
             # Aceptamos nuevas conexiones
             player_socket, player_address = server_socket.accept()
+            player_queue.append([player_socket, player_address])
             print(f"Conexión de: {player_address}")
             
             # Creamos un hilo para manejar cada conexión de jugador

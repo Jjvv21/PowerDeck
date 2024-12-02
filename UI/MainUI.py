@@ -9,6 +9,8 @@ from UI.MatchUI import *
 
 class MainUI(SubUI):
     message = ""
+    client = Client()
+    cancel = False
 
     def __init__(self, window, caller, player_manager, player):
         """
@@ -49,11 +51,12 @@ class MainUI(SubUI):
 
     def cancelSearch(self):
         self.cancel_button.place(x = 1000, y = 1000)
+        self.client.cancel_search()
         self.cancel = True
         self.play_button.place(x = 100, y = 80)
 
     def looking(self):
-        self.message = connect()
+        self.message = self.client.connect()
         self.cancel_button.place(x = 1000, y = 1000)
         self.play_button.place(x = 100, y = 80)
         messagebox.showinfo("Éxito", self.message)

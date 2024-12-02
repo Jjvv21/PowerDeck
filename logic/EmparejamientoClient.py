@@ -1,29 +1,51 @@
 import socket
+import threading
 
+class Client:
 # Dirección y puerto del servidor
-HOST = '127.0.0.1'
-PORT = 65432
+    HOST = '127.0.0.1'
+    PORT = 65432
+    looking = True
+    result = ""
 
-# Esta función conecta al cliente con el servidor
-def connect():
-    # Creamos un socket para conectarnos al servidor
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))  # Conectamos al servidor en la dirección y puerto especificados
+    # Esta función conecta al cliente con el servidor
+    def connect(self):
+        # Creamos un socket para conectarnos al servidor
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((self.HOST, self.PORT))  # Conectamos al servidor en la dirección y puerto especificados
 
-        while True:
-            # Esperamos mensajes del servidor
-            data = s.recv(1024)
-            print(f"Recibido: {data.decode()}")
+            self.looking = True
+            self.result = ""
+            print("Buscando rival")
 
-            # Si el servidor pregunta si aceptamos la partida, respondemos
-            if "¿Aceptar partida?" in data.decode("utf-8"):
-                response = input("¿Aceptar partida? (Y/N): ").strip().upper()
-                s.sendall(response.encode())  # Enviamos la respuesta al servidor
+            threading.Thread(target=self.listen_to_server, args=(s,)).start()
 
-            # Si el servidor notifica que se canceló o inicia el juego, terminamos
-            if b"La cola fue cancelada por tu oponente." in data or b"Inicia el juego!" in data:
+            try:
+                while True:
+                    # Keep the client running
+                    if not self.looking:
+                        s.close()
+                        print("Busqueda cancelada")
+                        return "Busqueda cancelada"
+                    if self.result == "Emparejado con otro jugador." or self.result == "No se encontro rival":
+                        return self.result
+            except KeyboardInterrupt:
+                s.close()
+                print("Conexión terminada")
+                return "Conexión terminada"
+
+    def listen_to_server(self, sock):
+        while self.looking:
+            try:
+                data = sock.recv(1024)
+                if not data:
+                    print("Desconectado")
+                    break
+                print(f"Server: {data.decode()}")
+                self.result = data.decode()
+            except ConnectionResetError:
+                print("El server cerró la conexión")
                 break
-
-# Ejecuta la conexión cuando se corre este archivo
-if __name__ == "__main__":
-    connect()
+    
+    def cancel_search(self):
+        self.looking = False
