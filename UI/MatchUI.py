@@ -1,6 +1,7 @@
 import time, threading, random
 from functools import partial
 from random import randint
+from copy import deepcopy
 
 from UI.SubUI import *
 from commons.ImageHandler import *
@@ -30,7 +31,6 @@ class MatchUI(SubUI):
 
         :window: Toplevel container for the widgets.
         :caller: UI that called this one.
-        :player_manager: manager for the players accounts info.
         :player: player that is currently logged in.
         """
         SubUI.__init__(self, window, caller, 800, 600)
@@ -48,13 +48,13 @@ class MatchUI(SubUI):
 
         self.placeOpponent(100, 20)
         self.placePlayer(100, self.height - 130)
-        self.updateHandImages()
+        self.updateHand("start")
 
-        self.my_deck = self.player.getSelectedDeck().getCards()
+        self.my_deck = deepcopy(self.player.getSelectedDeck().getCards())
         random.shuffle(self.my_deck)
         for i in range(0, 5):
             self.my_hand[i] = self.my_deck.pop(0)
-        self.updateHandImages()
+        self.updateHand("start")
 
         self.createBotDeck()
 
@@ -84,25 +84,33 @@ class MatchUI(SubUI):
     def placePlayer(self, posX, posY):
         steps = 100
 
+        self.canvas.create_text(posX - 85, posY - 30, anchor = tk.NW, text = "", tags = "stat")
+
         self.card1 = tk.Button(self.canvas, command = partial(self.playCard, 0), state = tk.DISABLED)
         self.card1.place(x = posX, y = posY)
+        self.canvas.create_text(posX + 30, posY - 30, anchor = tk.NW, text = "", tags = "stat1")
 
         self.card2 = tk.Button(self.canvas, command = partial(self.playCard, 1), state = tk.DISABLED)
         self.card2.place(x = posX + steps, y = posY)
+        self.canvas.create_text(posX + 30 + steps, posY - 30, anchor = tk.NW, text = "", tags = "stat2")
 
         self.card3 = tk.Button(self.canvas, command = partial(self.playCard, 2), state = tk.DISABLED)
         self.card3.place(x = posX + 2*steps, y = posY)
+        self.canvas.create_text(posX + 30 + 2*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat3")
 
         self.card4 = tk.Button(self.canvas, command = partial(self.playCard, 3), state = tk.DISABLED)
         self.card4.place(x = posX + 3*steps, y = posY)
+        self.canvas.create_text(posX + 30 + 3*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat4")
 
         self.card5 = tk.Button(self.canvas, command = partial(self.playCard, 4), state = tk.DISABLED)
         self.card5.place(x = posX + 4*steps, y = posY)
+        self.canvas.create_text(posX + 30 + 4*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat5")
 
         self.card6 = tk.Button(self.canvas, command = partial(self.playCard, 5), state = tk.DISABLED)
         self.card6.place(x = posX + 5*steps, y = posY)
+        self.canvas.create_text(posX + 30 + 5*steps, posY - 30, anchor = tk.NW, text = "", tags = "stat6")
 
-    def updateHandImages(self):
+    def updateHand(self, action):
         for i in range(0, 6):
             if self.my_hand[i] != None:
                 self.hand_image_names[i] = self.my_hand[i].getImage()
@@ -115,6 +123,20 @@ class MatchUI(SubUI):
         self.card4.config(image = self.hand_images[3])
         self.card5.config(image = self.hand_images[4])
         self.card6.config(image = self.hand_images[5])
+        if self.checking != -1 and action != "play":
+            self.canvas.itemconfig("stat1", text = f"{self.my_hand[0].getStats()[self.checking]}")
+            self.canvas.itemconfig("stat2", text = f"{self.my_hand[1].getStats()[self.checking]}")
+            self.canvas.itemconfig("stat3", text = f"{self.my_hand[2].getStats()[self.checking]}")
+            self.canvas.itemconfig("stat4", text = f"{self.my_hand[3].getStats()[self.checking]}")
+            self.canvas.itemconfig("stat5", text = f"{self.my_hand[4].getStats()[self.checking]}")
+            self.canvas.itemconfig("stat6", text = f"{self.my_hand[5].getStats()[self.checking]}")
+        else:
+            self.canvas.itemconfig("stat1", text = "")
+            self.canvas.itemconfig("stat2", text = "")
+            self.canvas.itemconfig("stat3", text = "")
+            self.canvas.itemconfig("stat4", text = "")
+            self.canvas.itemconfig("stat5", text = "")
+            self.canvas.itemconfig("stat6", text = "")
 
     def createBotDeck(self):
         self.opp_deck = []
@@ -178,6 +200,7 @@ class MatchUI(SubUI):
         self.card6.config(state = tk.DISABLED)
 
     def selectTime(self):
+        self.canvas.itemconfig("stat", text = f"{self.stats[self.checking]}:")
         self.drawCard()
         self.canvas.itemconfig("feed", text = "Selección de carta")
         self.enableCards()
@@ -189,6 +212,7 @@ class MatchUI(SubUI):
         self.disableCards()
         if self.selected_card == None:
             self.playCard(randint(0, 5))
+        self.canvas.itemconfig("stat", text = "")
         self.opp_selection = self.opp_deck.pop(0)
         self.opp_selection_image = self.image_handler.resizeImage(self.opp_selection.getImage(), 2)
         self.canvas.itemconfig("oppcard", image = self.opp_selection_image)
@@ -205,7 +229,7 @@ class MatchUI(SubUI):
         drawn = self.my_deck.pop(0)
         self.my_hand[index] = drawn
         self.hand_image_names[index] = drawn.getImage()
-        self.updateHandImages()
+        self.updateHand("draw")
 
     def playCard(self, index):
         self.selected_card = self.my_hand[index]
@@ -214,7 +238,7 @@ class MatchUI(SubUI):
         self.canvas.itemconfig("mycard", image = self.selected_card_image)
         self.my_hand[index] = None
         self.hand_image_names[index] = "noCard.jpg"
-        self.updateHandImages()
+        self.updateHand("play")
     
     def endTurn(self):
         my_stat = self.selected_card.getStats()[self.checking]
